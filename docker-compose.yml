@@ -1,0 +1,11 @@
+---
+version: '3'
+
+services:
+  esphome:
+    image: esphome/esphome:1.19.4
+    privileged: true
+    # devices:
+    #   - /dev/cu.usbserial-0001:/dev/ttyUSB0
+    volumes:
+      - ./:/config

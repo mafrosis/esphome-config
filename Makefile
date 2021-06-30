@@ -15,8 +15,8 @@ gen-templates:
 
 .PHONY: compile
 compile: gen-templates
-	docker run --rm -v $$(pwd):/config esphome/esphome device_$(DEVICE).yaml compile
+	docker-compose run --rm esphome device_$(DEVICE).yaml compile
 
 .PHONY: upload
 upload:
-	docker run --rm -v $$(pwd):/config esphome/esphome device_$(DEVICE).yaml upload
+	docker-compose run --rm esphome device_$(DEVICE).yaml upload

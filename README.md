@@ -26,16 +26,29 @@ Firmware options include:
 |c05775|Plug Switch|Smart Connect|PC189HA|Bunnings|
 |92d0f9|Plug Switch|Smart Connect|PC189HA|Bunnings|
 |f58f91|4x Plug Switch|Smart Connect|PB89HA|Bunnings|
+|10945b|ESP8622 1|ESP8266 dev board|N/A|Aliexpress|
+|774ba4|ESP8622 2|ESP8266 dev board|N/A|Aliexpress|
 
 
 ## Process
 
- 0. Build custom Espurna base image, [including wifi SSID and password](#espurna-custom-image-builds)
- 1. Use [`tuya-convert`](https://github.com/ct-Open-Source/tuya-convert) to do the initial hack
- 2. Install custom Espurna base image as part of tuya-convert process
- 3. Ensure device appears on wifi network
- 4. Update "My Devices" table :)
- 5. Setup esphome config and re-flash to esphome
+ 0. Extract the ID for the above table using `esptool.py`, as specified [below](#id-field)
+ 1. [Configure a custom image using the esphome templates](#template-setup)
+ 2. [Build the custom image](#firmware-build)
+ 3. For store-bought devices, use [`tuya-convert`](https://github.com/ct-Open-Source/tuya-convert) to do the initial hack, flashing the binary built previously
+ 4. Ensure device appears on wifi network
+ 5. Update "My Devices" table :)
+ 6. Setup esphome config and re-flash to esphome
+
+
+## ID Field
+
+The `id` for a given device is the last 6 chars of its MAC address. One can retrieve the MAC by
+attaching the device via USB and running:
+
+```
+esptool.py flash_id | grep MAC | cut -d : -f 5-7
+```
 
 
 ## Tuya Convert
@@ -53,15 +66,36 @@ My suggestion is to buy devices from places you can return - if tuya OTA flashes
 them and try a different brand.
 
 
-## Espurna custom image builds
+## ESP Home
 
-f
+### Template Setup
+
+There are a few included templates, and it's trivial to create new ones from the [ESP Home docs](https://esphome.io/index.html).
+
+Edit the `Makefile`, to show the 
+
+Generate the firmware config YAML files:
+
+    export WIFI_PASSWORD=<secretsquirrel>
+    make gen-templates
 
 
-## Flashing with esptool
+### Firmware Build
+
+Render the template configured for device `c0a4ba`, and build the firmware binary:
+
+    DEVICE=c0a4ba make compile
+
+Under the hood, this calls esphome `compile` command:
+
+    docker-compose run --rm esphome device_10945b.yaml compile
+
+
+### Initial flash with esptool
+
 
 ```
-> esptool.py -p /dev/ttyUSB0 write_flash -fs 1MB -fm dout 0x0 /home/pi/espurna-1.15.0-dev-espurna-core-webui-1MB.bin
+> esptool.py --before default_reset --after hard_reset --baud 460800 --chip esp8266 write_flash 0x0 774ba4/.pioenvs/774ba4/firmware.bin
 esptool.py v2.8
 Serial port /dev/ttyUSB0
 Connecting....
@@ -82,20 +116,7 @@ Leaving...
 Hard resetting via RTS pin...
 ```
 
-## ESP Home flashes
-
-ESP Home has a very pleasant YAML configuration, which the tool takes and uses to build a firmware.
-Since I have multiples of the same device, I have templated the device configuration using Jinja.
-A `Makefile` provides a simple interface to do the magic:
-
-Generate the firmware config YAML files:
-
-    export WIFI_PASSWORD=<secretsquirrel>
-    make gen-templates
-
-Compile the firmware, and then [upload via Espurna UI](https://esphome.io/guides/migrate_espurna.html)
-
-    DEVICE=c0a4ba make compile
+### OTA flash
 
 Once a device has been flashed to ESP Home, one can update directly from the CLI:
 

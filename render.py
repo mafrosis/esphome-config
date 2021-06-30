@@ -10,7 +10,9 @@ def main():
     device_name = os.environ['NAME']
     static_ip = os.environ['IP']
     template = os.environ['TMPL']
-    wifi_password = os.environ['WIFI_PASSWORD']
+    wifi_password = os.environ['WIFI_PASSWORD'].strip()
+    fallback_password = os.environ['WIFI_FALLBACK'].strip()
+    room = os.environ.get('ROOM', '').strip()
 
     if not wifi_password:
         raise Exception('WIFI_PASSWORD env not set')
@@ -24,6 +26,8 @@ def main():
             device_name=device_name,
             static_ip=static_ip,
             wifi_password=wifi_password,
+            fallback_password=fallback_password,
+            room=room,
         )
 
     with open(f'device_{device_id}.yaml', 'w') as f:
