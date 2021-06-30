@@ -1,0 +1,39 @@
+# vim: set ft=yaml:
+---
+# Pin configuration for an Arlec PC190A power socket
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+    name: ${device_name} Power Button
+    on_press:
+      - switch.toggle: relay
+
+  - platform: status
+    name: ${device_name} Status
+
+switch:
+  - platform: gpio
+    name: ${device_name}
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      light.turn_on:
+        id: blue_led
+    on_turn_off:
+      light.turn_off:
+        id: blue_led
+
+light:
+  - platform: binary
+    id: blue_led
+    output: led1
+
+output:
+  - platform: gpio
+    pin: GPIO04
+    id: led1
+    inverted: true
