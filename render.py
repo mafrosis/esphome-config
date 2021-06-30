@@ -30,7 +30,10 @@ def main():
             room=room,
         )
 
-    with open(f'device_{device_id}.yaml', 'w') as f:
+    if not os.path.exists('build'):
+        os.makedirs('build')
+
+    with open(f'build/device_{device_id}.yaml', 'w') as f:
         f.write(output)
 
 

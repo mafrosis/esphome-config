@@ -8,4 +8,4 @@ services:
     # devices:
     #   - /dev/cu.usbserial-0001:/dev/ttyUSB0
     volumes:
-      - ./:/config
+      - ./build/:/config
