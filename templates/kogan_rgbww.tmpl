@@ -1,62 +1,7 @@
+# vim: set ft=yaml:
 ---
-substitutions:
-  device_id: {{ device_id }}
-  device_name: {{ device_name }}
-  static_ip: {{ static_ip }}
 
-
-esphome:
-  name: ${device_id}
-  platform: ESP8266
-  board: esp8285
-
-wifi:
-  ssid: eggs_iot
-  password: {{ wifi_password }}
-  fast_connect: true
-
-  manual_ip:
-    static_ip: ${static_ip}
-    gateway: 192.168.1.1
-    subnet: 255.255.255.0
-
-  # Enable fallback hotspot (captive portal) in case wifi connection fails
-  ap:
-    ssid: ${device_id} Fallback Hotspot
-    password: {{ fallback_password }}
-
-# Start a recovery AP if wifi fails to connect
-# https://esphome.io/components/captive_portal.html
-captive_portal:
-
-# Enable OTA updates via port 8266
-# https://esphome.io/components/ota.html
-ota:
-
-# Enable the webserver
-# https://esphome.io/components/web_server.html
-web_server:
-  auth:
-    username: mafro
-    password: {{ fallback_password }}
-
-prometheus:
-
-# Use NTP for local clock
-# https://esphome.io/components/time.html
-time:
-  - platform: sntp
-    timezone: Australia/Melbourne
-
-# Setup connection to MQTT broker
-# https://esphome.io/components/mqtt.html
-mqtt:
-  broker: 192.168.1.198
-  keepalive: 60s
-  discovery: true
-
-# ----------------------------------------
-
+# Pin configuration for a Kogan RGBWW bulb
 sm16716:
   data_pin: GPIO14
   clock_pin: GPIO4

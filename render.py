@@ -19,9 +19,10 @@ def main():
 
     env = Environment(loader=FileSystemLoader('templates'))
 
-    with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
+    # Read the templated esphome header YAML, and patch in variables
+    with open('templates/_esphome.tmpl', encoding='utf-8') as f:
         t = env.from_string(f.read())
-        output = t.render(
+        esphome = t.render(
             device_id=device_id,
             device_name=device_name,
             static_ip=static_ip,
@@ -30,9 +31,17 @@ def main():
             room=room,
         )
 
+    # Read the device specific configuration
+    with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
+        device = f.read()
+
+    # Combine the header and device specific config
+    output = f'{esphome}\n\n# ----------------------------------------\n\n{device}'
+
     if not os.path.exists('build'):
         os.makedirs('build')
 
+    # Write out the build config
     with open(f'build/device_{device_id}.yaml', 'w') as f:
         f.write(output)
 
