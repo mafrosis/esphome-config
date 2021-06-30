@@ -4,6 +4,7 @@ substitutions:
   device_name: {{ device_name }}
   static_ip: {{ static_ip }}
 
+
 esphome:
   name: ${device_id}
   platform: ESP8266
@@ -35,6 +36,11 @@ ota:
 # Enable the webserver
 # https://esphome.io/components/web_server.html
 web_server:
+  auth:
+    username: mafro
+    password: {{ fallback_password }}
+
+prometheus:
 
 # Use NTP for local clock
 # https://esphome.io/components/time.html
