@@ -14,6 +14,16 @@ def main():
     fallback_password = os.environ['WIFI_FALLBACK'].strip()
     room = os.environ.get('ROOM', '').strip()
 
+    if 'esp32' in template:
+        platform = 'ESP32'
+        board = 'nodemcu-32s'
+    elif 'esp8266' in template:
+        platform = 'ESP8266'
+        board = 'nodemcuv2'
+    else:
+        platform = 'ESP8266'
+        board = 'esp8285'
+
     if not wifi_password:
         raise Exception('WIFI_PASSWORD env not set')
 
@@ -28,6 +38,8 @@ def main():
             static_ip=static_ip,
             wifi_password=wifi_password,
             fallback_password=fallback_password,
+            platform=platform,
+            board=board,
             room=room,
         )
 
