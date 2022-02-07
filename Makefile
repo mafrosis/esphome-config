@@ -17,8 +17,8 @@ gen-templates:
 
 .PHONY: compile
 compile: gen-templates
-	docker-compose run --rm esphome device_$(DEVICE).yaml compile
+	docker-compose run --rm esphome compile device_$(DEVICE).yaml
 
 .PHONY: upload
 upload:
-	docker-compose run --rm esphome device_$(DEVICE).yaml upload
+	docker-compose run --rm esphome upload device_$(DEVICE).yaml
