@@ -68,19 +68,15 @@ them and try a different brand.
 
 ## ESP Home
 
-### Template Setup
+### Template
 
 There are a few included templates, and it's trivial to create new ones from the [ESP Home docs](https://esphome.io/index.html).
 
-Edit the `Makefile`, to show the 
-
-Generate the firmware config YAML files:
-
-    export WIFI_PASSWORD=<secretsquirrel>
-    make gen-templates
+The `gen-templates` section of the `Makefile` shows how to setup your devices, by passing required
+variables and composing templates together to produce the build.
 
 
-### Firmware Build
+### Build
 
 Render the template configured for device `c0a4ba`, and build the firmware binary:
 
@@ -88,7 +84,7 @@ Render the template configured for device `c0a4ba`, and build the firmware binar
 
 Under the hood, this calls esphome `compile` command:
 
-    docker-compose run --rm esphome device_10945b.yaml compile
+    esphome compile build/device_10945b.yaml
 
 
 ### Initial flash with esptool
@@ -118,6 +114,7 @@ Hard resetting via RTS pin...
 
 ### OTA flash
 
-Once a device has been flashed to ESP Home, one can update directly from the CLI:
+Once a device has been flashed to ESP Home, one can update directly from the CLI via OTA on the
+network. If that is failing, switch to flash via USB.
 
     DEVICE=c0a4ba make compile upload
