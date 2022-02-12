@@ -12,8 +12,8 @@ gen-templates:
 	#ID=c05775 NAME="Arlec PC189HA 1" IP=192.168.20.206 ./render.py
 	ID=92d0f9 NAME="Arlec PC190HA 1" IP=192.168.20.216 TMPL=arlec_pc190ha ./render.py
 	#ID=f58f91 NAME="Arlec PB89HA" IP=192.168.20.164 ./render.py
-	ID=10945b NAME="ESP8622 1" IP=192.168.20.121 ROOM="Master bedroom" TMPL=esp8266_dht22 ./render.py
-	ID=774ba4 NAME="ESP8622 2" IP=192.168.20.122 ROOM="Bea bedroom" TMPL=esp8266_dht22 ./render.py
+	ID=10945b NAME="ESP8622 1" IP=192.168.20.121 ROOM="Master bedroom" TMPL=dht22 ./render.py
+	ID=774ba4 NAME="ESP8622 2" IP=192.168.20.122 ROOM="Bea bedroom" TMPL=dht22 ./render.py
 
 .PHONY: compile
 compile: gen-templates

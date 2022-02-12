@@ -1,10 +1,11 @@
 # vim: set ft=yaml:
 ---
 
-# Pin configuration for a DHT22 attached to a vanilla ESP8266
+# Pin configuration for a DHT22 sensor
+# https://esphome.io/components/sensor/dht.html
 sensor:
   - platform: dht
-    pin: D1
+    pin: D4
     model: DHT22_TYPE2
     temperature:
       name: "${room} Temperature"
