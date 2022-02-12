@@ -10,3 +10,6 @@
 /secrets.yaml
 
 build
+*.pyc
+*.egg-info
+venv

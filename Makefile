@@ -1,8 +1,9 @@
 export WIFI_PASSWORD
+export WIFI_FALLBACK
 
 venv:
 	python3 -m venv venv
-	./venv/bin/pip install -r requirements.txt
+	./venv/bin/pip install -e .
 
 .PHONY: setup
 setup: venv
@@ -14,17 +15,16 @@ clean:
 
 .PHONY: gen-templates
 gen-templates: clean
-	ID=ea9c90 NAME="Kogan Plug 1" IP=192.168.20.208 TMPL=kogan_plug ./render.py
-	ID=040cab NAME="Kogan Plug 2" IP=192.168.20.207 TMPL=kogan_plug ./render.py
-	ID=047c60 NAME="Kogan Plug 3" IP=192.168.20.214 TMPL=kogan_plug ./render.py
-	ID=c0a4b4 NAME="Kogan Plug 4" IP=192.168.20.218 TMPL=kogan_plug ./render.py
-	ID=6c7fe7 NAME="Kogan RGBW 1" IP=192.168.20.209 TMPL=kogan_rgbww ./render.py
-	ID=6c8595 NAME="Kogan RGBW 2" IP=192.168.20.174 TMPL=kogan_rgbww ./render.py
-	#ID=c05775 NAME="Arlec PC189HA 1" IP=192.168.20.206 ./render.py
-	ID=92d0f9 NAME="Arlec PC190HA 1" IP=192.168.20.216 TMPL=arlec_pc190ha ./render.py
-	#ID=f58f91 NAME="Arlec PB89HA" IP=192.168.20.164 ./render.py
-	ID=10945b NAME="ESP8622 1" IP=192.168.20.121 ROOM="Master bedroom" TMPL=dht22 ./render.py
-	ID=774ba4 NAME="ESP8622 2" IP=192.168.20.122 ROOM="Bea bedroom" TMPL=dht22 ./render.py
+	render ea9c90 192.168.20.208 esp8285 'Kogan Plug 1'    kogan_plug
+	render 040cab 192.168.20.207 esp8285 'Kogan Plug 2'    kogan_plug
+	render 047c60 192.168.20.214 esp8285 'Kogan Plug 3'    kogan_plug
+	render c0a4b4 192.168.20.218 esp8285 'Kogan Plug 4'    kogan_plug
+	render 6c7fe7 192.168.20.209 esp8285 'Kogan RGBW 1'    kogan_rgbww
+	render 6c8595 192.168.20.174 esp8285 'Kogan RGBW 2'    kogan_rgbww
+	render 92d0f9 192.168.20.216 esp8285 'Arlec PC190HA 1' arlec_pc190ha
+	render c05775 192.168.20.206 esp8285 'Arlec PC190HA 2' arlec_pc190ha
+	render 10945b 192.168.20.121 esp8266 'ESP8622 1'       dht22         --room 'Master bedroom'
+	render 774ba4 192.168.20.122 esp8266 'ESP8622 2'       dht22         --room 'Bea bedroom'
 
 .PHONY: compile
 compile: gen-templates
