@@ -43,13 +43,15 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
             fallback_password=fallback_password,
             platform=platform,
             board=board,
-            room=room,
         )
 
     # Combine the esphome header with each template
     for template in templates:
         with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
-            esphome = f'{esphome}\n\n# ----------------------------------------\n\n{f.read()}'
+            t = env.from_string(f.read())
+            device = t.render(room=room)
+
+            esphome = f'{esphome}\n\n# ----------------------------------------\n\n{device}'
 
     if not os.path.exists('build'):
         os.makedirs('build')
