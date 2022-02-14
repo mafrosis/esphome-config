@@ -11,7 +11,9 @@ from jinja2 import Environment, FileSystemLoader
 @click.argument('name')
 @click.argument('templates', nargs=-1)
 @click.option('--room', default='nil', help='Name of the room for this sensor')
-def main(device_id: str, device_ip: str, device_type: str, name: str, templates, room: str=None):
+@click.option('--address', default='nil', help='Sensor address')
+def main(device_id: str, device_ip: str, device_type: str, name: str, templates, room: str=None,
+         address: str='0'):
     wifi_password = os.environ['WIFI_PASSWORD'].strip()
     fallback_password = os.environ['WIFI_FALLBACK'].strip()
 
@@ -49,7 +51,7 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
     for template in templates:
         with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
             t = env.from_string(f.read())
-            device = t.render(room=room)
+            device = t.render(room=room, address=address)
 
             esphome = f'{esphome}\n\n# ----------------------------------------\n\n{device}'
 
