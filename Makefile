@@ -23,8 +23,8 @@ gen-templates: clean
 	render 6c8595 192.168.20.174 esp8285 'Kogan RGBW 2'    kogan_rgbww
 	render 92d0f9 192.168.20.216 esp8285 'Arlec PC190HA 1' arlec_pc190ha
 	render c05775 192.168.20.206 esp8285 'Arlec PC190HA 2' arlec_pc190ha
-	render 10945b 192.168.20.121 esp8266 'ESP8622 1'       dht22         --room 'Master bedroom'
-	render 774ba4 192.168.20.122 esp8266 'ESP8622 2'       dht22         --room 'Bea bedroom'
+	render 10945b 192.168.20.121 esp8266 'ESP8622 1'       dht22          --room 'Master bedroom'
+	render 774ba4 192.168.20.122 esp8266 'ESP8622 2'       dht22 temt6000 --room 'Bea bedroom'
 
 .PHONY: compile
 compile: gen-templates
