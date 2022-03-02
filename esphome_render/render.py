@@ -2,6 +2,9 @@ import os
 
 import click
 from jinja2 import Environment, FileSystemLoader
+import yaml
+
+# pylint: disable=consider-using-f-string
 
 
 @click.command()
@@ -47,13 +50,32 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
             board=board,
         )
 
-    # Combine the esphome header with each template
+    components = []
+
+    # Read in all device templates, substituting any variables
     for template in templates:
         with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
             t = env.from_string(f.read())
-            device = t.render(room=room, address=address)
+            components.append(
+                t.render(room=room, address=address)
+            )
 
-            esphome = f'{esphome}\n\n# ----------------------------------------\n\n{device}'
+    merged_components = {}
+
+    # Merge components under single top-level key (eg. multiple sensors merge to a single list)
+    for component in components:
+        for ctype, component_data in yaml.load(component, Loader=yaml.Loader).items():
+            if ctype not in merged_components:
+                merged_components[ctype] = component_data
+            else:
+                for subcomponent in component_data:
+                    merged_components[ctype].append(subcomponent)
+
+    # Combine the esphome header with rendered & merged components
+    esphome = '{}\n\n# ----------------------------------------\n\n{}'.format(
+        esphome,
+        yaml.dump(merged_components, Dumper=yaml.Dumper),
+    )
 
     if not os.path.exists('build'):
         os.makedirs('build')
