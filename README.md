@@ -1,17 +1,20 @@
-Flashing off-the-shelf Tuya devices
-===================================
+Flashing ESPHome devices
+==========
 
 ## Preamble
 
-Many off-the-shelf devices are powered with ESP8285 or ESP8286 chips, in devices with white-label
+Many off-the-shelf devices are powered with ESP8285 or ESP8266 chips, in devices with white-label
 firmware provided by a company called Tuya. The project [tuya-convert](https://github.com/ct-Open-Source/tuya-convert)
 exists to hack these devices and enable us to load custom firmware.
 
 Firmware options include:
 * Tasmota - the original; many devices are known and pin configurations [listed here](https://templates.blakadder.com/)
 * Espurna - an alternative which has a nice Web UI and is easily configurable with custom builds
-* ESP Home - a versetile firmware which supports a lot of different chips in practice, and has many
+* **ESP Home** - a versetile firmware which supports a lot of different chips in practice, and has many
   great features for the advanced user
+
+I use [ESP Home](https://esphome.io/) both for NodeMCU type ESP8266 boards, and for off-the-shelf
+devices running Tuya.
 
 
 ## My Devices
