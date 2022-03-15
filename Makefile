@@ -1,5 +1,6 @@
 export WIFI_PASSWORD
 export WIFI_FALLBACK
+export USBDEV
 
 venv:
 	python3 -m venv venv
@@ -32,4 +33,8 @@ compile: gen-templates
 
 .PHONY: upload
 upload: compile
+ifdef USBDEV
+	esphome upload --device /dev/$(USBDEV) build/device_$(DEVICE).yaml
+else
 	esphome upload build/device_$(DEVICE).yaml
+endif
