@@ -31,10 +31,10 @@ gen-templates:
 compile: gen-templates
 	esphome compile build/device_$(DEVICE).yaml
 
-.PHONY: upload
-upload: compile
+.PHONY: upload run
+upload run: compile
 ifdef USBDEV
-	esphome upload --device /dev/$(USBDEV) build/device_$(DEVICE).yaml
+	esphome $@ --device /dev/$(USBDEV) build/device_$(DEVICE).yaml
 else
-	esphome upload build/device_$(DEVICE).yaml
+	esphome $@ build/device_$(DEVICE).yaml
 endif
