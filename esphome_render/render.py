@@ -20,7 +20,13 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
     wifi_password = os.environ['WIFI_PASSWORD'].strip()
     fallback_password = os.environ['WIFI_FALLBACK'].strip()
 
-    if device_type == 'esp32':
+    if device_type == 'lolin':
+        platform = 'ESP32'
+        board = 'lolin_d32'
+    elif device_type == 'lolin_pro':
+        platform = 'ESP32'
+        board = 'lolin_d32_pro'
+    elif device_type == 'esp32':
         platform = 'ESP32'
         board = 'nodemcu-32s'
     elif device_type == 'esp8266':
@@ -49,8 +55,7 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
             platform=platform,
             board=board,
         )
-
-    components = []
+        components = [esphome]
 
     # Read in all device templates, substituting any variables
     for template in templates:
@@ -62,20 +67,27 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
 
     merged_components = {}
 
-    # Merge components under single top-level key (eg. multiple sensors merge to a single list)
-    for component in components:
-        for ctype, component_data in yaml.load(component, Loader=yaml.Loader).items():
-            if ctype not in merged_components:
-                merged_components[ctype] = component_data
-            else:
-                for subcomponent in component_data:
-                    merged_components[ctype].append(subcomponent)
+    def _merge(merged, node):
+        if isinstance(node, list):
+            merged += node
+        elif isinstance(node, dict):
+            for k,v in node.items():
+                if k not in merged:
+                    merged[k] = v
+                else:
+                    _merge(merged[k], v)
+        else:
+            raise Exception('Unknown node type: expected list or dict')
 
-    # Combine the esphome header with rendered & merged components
-    esphome = '{}\n\n# ----------------------------------------\n\n{}'.format(
-        esphome,
-        yaml.dump(merged_components, Dumper=yaml.Dumper),
-    )
+    # Merge components under single top-level key:
+    # - multiple sensors merge
+    # - multiple mqtt entries merge
+    # - multiple mqtt.on_message entries merge
+    for component in components:
+        _merge(merged_components, yaml.load(component, Loader=yaml.Loader))
+
+    # Dump the merged template components back to YAML
+    esphome = yaml.dump(merged_components, Dumper=yaml.Dumper)
 
     if not os.path.exists('build'):
         os.makedirs('build')
