@@ -2,7 +2,7 @@
 
 import os
 
-from jinja2 import Template
+from jinja2 import Environment, FileSystemLoader
 
 
 def main():
@@ -15,8 +15,10 @@ def main():
     if not wifi_password:
         raise Exception('WIFI_PASSWORD env not set')
 
-    with open(f'{template}.tmpl') as f:
-        t = Template(f.read())
+    env = Environment(loader=FileSystemLoader('templates'))
+
+    with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
+        t = env.from_string(f.read())
         output = t.render(
             device_id=device_id,
             device_name=device_name,
