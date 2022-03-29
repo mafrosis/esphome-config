@@ -8,10 +8,11 @@ firmware provided by a company called Tuya. The project [tuya-convert](https://g
 exists to hack these devices and enable us to load custom firmware.
 
 Firmware options include:
-* Tasmota - the original; many devices are known and pin configurations [listed here](https://templates.blakadder.com/)
-* Espurna - an alternative which has a nice Web UI and is easily configurable with custom builds
-* **ESP Home** - a versetile firmware which supports a lot of different chips in practice, and has many
-  great features for the advanced user
+
+ * Tasmota - the original; many devices are known and pin configurations [listed here](https://templates.blakadder.com/)
+ * Espurna - an alternative which has a nice Web UI and is easily configurable with custom builds
+ * **ESP Home** - a versetile firmware which supports a lot of different chips in practice, and has many
+   great features for the advanced user
 
 I use [ESP Home](https://esphome.io/) both for NodeMCU type ESP8266 boards, and for off-the-shelf
 devices running Tuya.
@@ -29,18 +30,19 @@ devices running Tuya.
 |c05775|Plug Switch|Smart Connect|PC189HA|Bunnings|
 |92d0f9|Plug Switch|Smart Connect|PC189HA|Bunnings|
 |f58f91|4x Plug Switch|Smart Connect|PB89HA|Bunnings|
-|10945b|ESP8622 1|ESP8266 dev board|N/A|Aliexpress|
-|774ba4|ESP8622 2|ESP8266 dev board|N/A|Aliexpress|
+|10945b|ESP8622|Generic|NodeMCUv2|Aliexpress|
+|774ba4|ESP8622|Generic|NodeMCUv2|Aliexpress|
+|707a3c|ESP32|Wemos|LOLIN D32|Aliexpress|
 
 
 ## Process
 
  0. Extract the ID for the above table using `esptool.py`, as specified [below](#id-field)
- 1. [Configure a custom image using the esphome templates](#template-setup)
- 2. [Build the custom image](#firmware-build)
- 3. For store-bought devices, use [`tuya-convert`](https://github.com/ct-Open-Source/tuya-convert) to do the initial hack, flashing the binary built previously
+ 1. [Configure a custom image using the esphome templates](#template)
+ 2. [Build the custom image](#build)
+ 3. For store-bought devices, use [`tuya-convert`](#tuya-convert) to do the initial hack, flashing the binary built previously
  4. Ensure device appears on wifi network
- 5. Update "My Devices" table :)
+ 5. Update "My Devices" table in this `README.md`
  6. Setup esphome config and re-flash to esphome
 
 
@@ -52,22 +54,6 @@ attaching the device via USB and running:
 ```
 esptool.py flash_id | grep MAC | cut -d : -f 5-7
 ```
-
-
-## Tuya Convert
-
-The [tuya-convert](https://github.com/ct-Open-Source/tuya-convert) project exists to do OTA hacks
-
-
-### Note on Newer Firmwares
-
-A more recent tuya-based firmware was released which cannot be hacked over-the-air. At time of
-writing, this [github thread](https://github.com/ct-Open-Source/tuya-convert/issues/483) has a lot
-of people discussing the topic, but no concrete results.
-
-My suggestion is to buy devices from places you can return - if tuya OTA flashes don't work, return
-them and try a different brand.
-
 
 ## ESP Home
 
@@ -120,4 +106,23 @@ Hard resetting via RTS pin...
 Once a device has been flashed to ESP Home, one can update directly from the CLI via OTA on the
 network. If that is failing, switch to flash via USB.
 
-    DEVICE=c0a4ba make compile upload
+    DEVICE=c0a4ba make upload
+
+
+## Tuya Convert
+
+The [tuya-convert](https://github.com/ct-Open-Source/tuya-convert) project exists to do OTA hacks
+on whitelabelled ESP devices.
+
+
+TODO how to use tuya convert
+
+
+### Note on Newer Firmwares
+
+A more recent tuya-based firmware was released which cannot be hacked over-the-air. At time of
+writing, this [github thread](https://github.com/ct-Open-Source/tuya-convert/issues/483) has a lot
+of people discussing the topic, but no concrete results.
+
+My suggestion is to buy devices from places you can return - if tuya OTA flashes don't work, return
+them and try a different brand.
