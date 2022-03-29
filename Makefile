@@ -16,7 +16,7 @@ clean:
 
 .PHONY: gen-templates
 gen-templates:
-	render ea9c90 192.168.20.208 esp8285 'Kogan Plug 1'    kogan_plug
+	render ea9c90 192.168.20.208 esp8285 'Kogan Plug 1'    kogan_plug debug
 	render 040cab 192.168.20.50  esp8285 'Kogan Plug 2'    kogan_plug
 	render 047c60 192.168.20.54  esp8285 'Kogan Plug 3'    kogan_plug
 	render c0a4b4 192.168.20.218 esp8285 'Kogan Plug 4'    kogan_plug

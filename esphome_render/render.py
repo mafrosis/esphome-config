@@ -62,7 +62,11 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
         with open(f'templates/{template}.tmpl', encoding='utf-8') as f:
             t = env.from_string(f.read())
             components.append(
-                t.render(room=room, address=address)
+                t.render(
+                    room=room,
+                    address=address,
+                    fallback_password=fallback_password,
+                )
             )
 
     merged_components = {}
@@ -73,7 +77,7 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
         elif isinstance(node, dict):
             for k,v in node.items():
                 if k not in merged:
-                    merged[k] = v
+                    merged[k] = {} if v is None else v
                 else:
                     _merge(merged[k], v)
         else:
