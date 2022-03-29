@@ -1,0 +1,15 @@
+# vim: set ft=yaml:
+---
+# Override default logger with DEBUG level one
+# https://esphome.io/components/logger.html
+logger:
+  level: DEBUG
+
+# https://esphome.io/components/debug.html
+debug:
+  update_interval: 5s
+
+text_sensor:
+  - platform: debug
+    device:
+      name: Device Info
