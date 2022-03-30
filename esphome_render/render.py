@@ -88,7 +88,8 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
     # - multiple mqtt entries merge
     # - multiple mqtt.on_message entries merge
     for component in components:
-        _merge(merged_components, yaml.load(component, Loader=yaml.Loader))
+        for doc in yaml.load_all(component, Loader=yaml.Loader):
+            _merge(merged_components, doc)
 
     # Dump the merged template components back to YAML
     esphome = yaml.dump(merged_components, Dumper=yaml.Dumper)
