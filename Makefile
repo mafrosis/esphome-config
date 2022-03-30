@@ -26,6 +26,7 @@ gen-templates:
 	render c05775 192.168.20.56  esp8285 'Arlec PC190HA 2' arlec_pc190ha
 	render 10945b 192.168.20.53  esp8266 'ESP8622 1'       dht22          --room 'Master Bedroom'
 	render 774ba4 192.168.20.52  esp8266 'ESP8622 2'       dht22 temt6000 --room 'Bea Bedroom'
+	render 7756f8 192.168.20.51  esp8266 'ESP8622 3'       dht22          --room 'Living Room PS5'
 
 .PHONY: compile
 compile: gen-templates
