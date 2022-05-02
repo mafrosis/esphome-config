@@ -109,6 +109,48 @@ network. If that is failing, switch to flash via USB.
     DEVICE=c0a4ba make upload
 
 
+## Templates
+
+Notes on the templates and their respective components. Mostly everything comes from Aliexpress.
+
+
+### DS18B20
+
+_[`ds18b20.tmpl`](./templates/ds18b20.tmpl)_
+
+[Dallas](https://esphome.io/components/sensor/dallas.html) 1-wire protocol temperature sensors, such
+as the DS18B20.
+
+These are fast to read, and are fully enclosed and therefore safe for outdoors.
+
+Many sensors can be put on the same data line (hence "1-wire protocol"); each device is identified
+by a hexidecimal address, which esphome will print on startup when it scans the Dallas bus. 
+
+For indoors usage, the DHT22 is preferred as no circuit is required - the DHT22 pins attach directly
+the ESP board. The exception is the Raspberry Pi - DHT22 support is terrible (the Adafruit
+libraries), so preference is to use the [`w1thermsensor`](https://github.com/timofurrer/w1thermsensor)
+project as in [mafrosis/w1therm](https://github.com/mafrosis/w1therm).
+
+```
+┌──────────────────┐
+│ DS18B20          │
+│                  │
+│ RED YELLOW BLACK │
+└──────────────────┘
+   │    │     │
+   │    │     │
+   │    │     │
+┌─────────┐   │
+│ 2.2k R  │   └┐
+└─────────┘    │
+   │    │      │
+   │    │      │
+   │    │      │
+
+  3V    D5    GND
+```
+
+
 ## Tuya Convert
 
 The [tuya-convert](https://github.com/ct-Open-Source/tuya-convert) project exists to do OTA hacks
