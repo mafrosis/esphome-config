@@ -1,7 +1,8 @@
 Flashing ESPHome devices
 ==========
 
-## Preamble
+Preamble
+----------
 
 Many off-the-shelf devices are powered with ESP8285 or ESP8266 chips, in devices with white-label
 firmware provided by a company called Tuya. The project [tuya-convert](https://github.com/ct-Open-Source/tuya-convert)
@@ -18,7 +19,8 @@ I use [ESP Home](https://esphome.io/) both for NodeMCU type ESP8266 boards, and 
 devices running Tuya.
 
 
-## My Devices
+My Devices
+----------
 
 |ID|Type|Manufacturer|Model|Source|
 |--|----|------------|-----|------|
@@ -35,7 +37,8 @@ devices running Tuya.
 |707a3c|ESP32|Wemos|LOLIN D32|Aliexpress|
 
 
-## Process
+Process
+----------
 
  0. Extract the ID for the above table using `esptool.py`, as specified [below](#id-field)
  1. [Configure a custom image using the esphome templates](#template)
@@ -46,7 +49,7 @@ devices running Tuya.
  6. Setup esphome config and re-flash to esphome
 
 
-## ID Field
+### ID Field
 
 The `id` for a given device is the last 6 chars of its MAC address. One can retrieve the MAC by
 attaching the device via USB and running:
@@ -55,17 +58,44 @@ attaching the device via USB and running:
 esptool.py flash_id | grep MAC | cut -d : -f 5-7
 ```
 
-## ESP Home
+ESP Home
+----------
 
 ### Template
 
-There are a few included templates, and it's trivial to create new ones from the [ESP Home docs](https://esphome.io/index.html).
+Templates for different devices are in the [`templates`](./templates) directory. These can be
+composed together when multiple I/O devices are attached to a single ESP. It's trivial to create
+new templates from the [ESP Home docs](https://esphome.io/index.html).
 
-The `gen-templates` section of the `Makefile` shows how to setup your devices, by passing required
-variables and composing templates together to produce the build.
+The `render` script outputs a file to feed `esphome`:
+
+```
+render 774ba4 192.168.20.52  esp8266 'ESP8622 2' dht22 temt6000 --room 'Baby Bedroom'
+```
+
+CLI options are as follows:
+
+```
+Usage: render [OPTIONS] DEVICE_ID DEVICE_IP DEVICE_TYPE NAME [TEMPLATES]...
+
+  Render a set of templates as an ESPHome configuration.
+
+  DEVICE_ID  Unique identifier for this ESP
+  DEVICE_IP  Static IP on your LAN for this ESP
+  DEVICE_TYPE  PlatformIO platform/board combination. One of lolin,lolin_pro,esp32,esp8266,esp8285
+  NAME         Friendly device name, which will show in HA
+  TEMPLATES    List of templates to render
+
+Options:
+  --room TEXT     Name of the room for this sensor
+  --address TEXT  Sensor address
+  --help          Show this message and exit.
+```
 
 
 ### Build
+
+A `Makefile` is included to simplify usage across many ESPs.
 
 Render the template configured for device `c0a4ba`, and build the firmware binary:
 
