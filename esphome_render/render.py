@@ -17,6 +17,16 @@ import yaml
 @click.option('--address', default='nil', help='Sensor address')
 def main(device_id: str, device_ip: str, device_type: str, name: str, templates, room: str=None,
          address: str='0'):
+    '''
+    Render a set of templates as an ESPHome configuration.
+
+    \b
+    DEVICE_ID  Unique identifier for this ESP
+    DEVICE_IP  Static IP on your LAN for this ESP
+    DEVICE_TYPE  PlatformIO platform/board combination. One of lolin,lolin_pro,esp32,esp8266,esp8285
+    NAME         Friendly device name, which will show in HA
+    TEMPLATES    List of templates to render
+    '''
     wifi_password = os.environ['WIFI_PASSWORD'].strip()
     fallback_password = os.environ['WIFI_FALLBACK'].strip()
 
@@ -32,7 +42,7 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
     elif device_type == 'esp8266':
         platform = 'ESP8266'
         board = 'nodemcuv2'
-    else:
+    elif device_type == 'esp8285':
         platform = 'ESP8266'
         board = 'esp8285'
 
