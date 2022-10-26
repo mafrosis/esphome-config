@@ -139,19 +139,121 @@ network. If that is failing, switch to flash via USB.
     DEVICE=c0a4ba make upload
 
 
-## Templates
+Devices
+---------
 
-Notes on the templates and their respective components. Mostly everything comes from Aliexpress.
+Notes on devices to use with ESP32/ESP8266.
 
 
-### DS18B20
+## SSD1306
+
+ * [ESPHome component](https://esphome.io/components/display/ssd1306.html)
+ * [ESPHome template](./templates/display/ssd1306_i2c.tmpl)
+
+Pin configuration for an OLED [128x64 display](https://www.adafruit.com/product/326).
+These can run on either i2c or SPI bus; this configuration uses i2c.
+
+From the screen-side, pins left-to-right:
+
+ 1. `Data` - i2c data pin, or SPI MOSI
+ 2. `Clk` - SPI clock
+ 3. `SA0` - Select Address / Data Command (aka `DC`)
+ 4. `Rst` - Reset
+ 5. `CS` - SPI chip select
+ 6. `3v3` - 3.3v input
+ 7. `Vin`
+ 8. `Gnd`
+
+Required pin config from the [ST7735 esphome.io doc](https://esphome.io/components/display/st7735.html):
+
+```
+spi:
+  clk_pin: 25
+  mosi_pin: 26
+
+display:
+  - platform: st7735
+    reset_pin: 21
+    cs_pin: 22
+    dc_pin: 23
+```
+
+
+## ST7735
+
+_[`st7735.tmpl`](./templates/display/st7735.tmpl)_
+
+[ST7735](https://esphome.io/components/display/st7735.html) display driver configuration, for use
+with a TZT 1.8" [TFT 160x128 display](https://www.aliexpress.com/item/4000219159401.html).
+
+![TFT 1.8"](./images/TFT18.webp)
+
+From the screen-side, pins left-to-right:
+
+ 1. `LED` - Connect to 3v or 5v
+ 2. `SCK` - SPI clock (aka `CLK`)
+ 3. `SDA` - Bus input (aka SPI `MOSI`)
+ 4. `A0` - Address Select / Data Command (aka `DC`)
+ 5. `RESET`
+ 6. `CS`
+ 7. `GND`
+ 8. `VCC`
+
+Required pin config from the [ST7735 esphome.io doc](https://esphome.io/components/display/st7735.html):
+
+```
+spi:
+  clk_pin: 25
+  mosi_pin: 26
+
+display:
+  - platform: st7735
+    reset_pin: 21
+    cs_pin: 22
+    dc_pin: 23
+```
+
+## LOLIN IR
+
+_[`Infrared`](https://esphome.io/components/remote_transmitter.html#remote-setting-up-infrared)_
+
+The [Wemos IR shield](https://www.wemos.cc/en/latest/d1_mini_shield/ir.html) is transmitter and
+receiver in one convenient board. It also has an LED to show when IR signals are being sent.
+
+![Wemos IR](./images/wemos_ir.jpg)
+
+||Pin|GPIO|
+|-|-|-|
+|Send|D3|0|
+|Recv|D4|2|
+
+
+## LOLIN D32 Pro TFT
+
+The LOLIN D32 Pro has a TFT connector, as does the I2C/TFT hat. The pinout for this connector
+follows. The colours correspond to the 10 pin TFT connector cable that fits the LOLIN.
+
+
+ 1. `TS_CS` / `IO12` (black) - Touchscreen SPI chip select
+ 2. `TFT_CS` / `IO14` (red) - TFT SPI chip select
+ 3. `3V3` (white)
+ 4. `SCK` / `IO18` (yellow) - SPI clock (aka `CLK`)
+ 5. `MISO` / `IO19` (orange) - SPI input
+ 6. `MOSI` / `IO23` (green) - SPI output (aka `SDA`)
+ 7. `TFT_DC` / `IO27` (blue) - Data Command (aka `DC`) / Address Select
+ 8. `TFT_RST` / `IO33` (purple) - TFT Reset
+ 9. `GND` (grey)
+ 10. `TFT_LED` / `IO32` (brown) - Connect to 3v or 5v
+
+
+## DS18B20
 
 _[`ds18b20.tmpl`](./templates/ds18b20.tmpl)_
 
 [Dallas](https://esphome.io/components/sensor/dallas.html) 1-wire protocol temperature sensors, such
 as the DS18B20.
 
-These are fast to read, and are fully enclosed and therefore safe for outdoors.
+These are fast to read, and are fully enclosed and therefore safe outdoors.
 
 Many sensors can be put on the same data line (hence "1-wire protocol"); each device is identified
 by a hexidecimal address, which esphome will print on startup when it scans the Dallas bus. 
@@ -179,22 +281,3 @@ project as in [mafrosis/w1therm](https://github.com/mafrosis/w1therm).
 
   3V    D5    GND
 ```
-
-
-## Tuya Convert
-
-The [tuya-convert](https://github.com/ct-Open-Source/tuya-convert) project exists to do OTA hacks
-on whitelabelled ESP devices.
-
-
-TODO how to use tuya convert
-
-
-### Note on Newer Firmwares
-
-A more recent tuya-based firmware was released which cannot be hacked over-the-air. At time of
-writing, this [github thread](https://github.com/ct-Open-Source/tuya-convert/issues/483) has a lot
-of people discussing the topic, but no concrete results.
-
-My suggestion is to buy devices from places you can return - if tuya OTA flashes don't work, return
-them and try a different brand.
