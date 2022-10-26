@@ -1,0 +1,17 @@
+# vim: set ft=yaml:
+---
+# Pin configuration for an infrared transmitter/receiver
+
+# https://esphome.io/components/remote_receiver.html
+remote_receiver:
+  pin:
+    number: 34
+    inverted: true
+  dump: all
+  idle: 25ms
+
+# https://esphome.io/components/remote_transmitter.html
+remote_transmitter:
+  pin:
+    number: 26
+  carrier_duty_percent: 50%

@@ -1,0 +1,26 @@
+# vim: set ft=yaml:
+---
+# IR codes for an SPDIF audio switch
+
+# https://esphome.io/components/remote_transmitter.html
+button:
+  - platform: template
+    name: Audio Switch Power
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: 0xFF00
+          command: 0xE817
+
+  - platform: template
+    name: Audio Switch Input 1
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: 0xFF00
+          command: 0xA25D
+
+  - platform: template
+    name: Audio Switch Input 2
+    on_press:
+      - remote_transmitter.transmit_nec:
+          address: 0xFF00
+          command: 0xE11E
