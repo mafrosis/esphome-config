@@ -1,0 +1,12 @@
+# vim: set ft=yaml:
+---
+# Sensor configuration for a single Dallas DS18B20
+
+# https://esphome.io/components/sensor/dallas.html
+dallas:
+  - pin: 23
+
+sensor:
+  - platform: dallas
+    address: {{ address }}
+    name: "{{ room }} Temperature"
