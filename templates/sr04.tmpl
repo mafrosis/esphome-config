@@ -1,0 +1,10 @@
+# vim: set ft=yaml:
+---
+# Trigger/echo ultrasonic distance sensor
+# https://esphome.io/components/sensor/ultrasonic.html
+
+sensor:
+  - platform: ultrasonic
+    trigger_pin: 19
+    echo_pin: 18
+    name: "{{ room }} SR04 Distance"
