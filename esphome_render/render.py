@@ -15,8 +15,9 @@ import yaml
 @click.argument('templates', nargs=-1)
 @click.option('--room', default='nil', help='Name of the room for this sensor')
 @click.option('--address', default='nil', help='Sensor address')
+@click.option('--sleep', default='nil', help='Deep sleep duration when using a battery')
 def main(device_id: str, device_ip: str, device_type: str, name: str, templates, room: str=None,
-         address: str='0'):
+         address: str='0', sleep: str=None):
     '''
     Render a set of templates as an ESPHome configuration.
 
@@ -75,6 +76,7 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
                 t.render(
                     room=room,
                     address=address,
+                    sleep=sleep,
                     fallback_password=fallback_password,
                 )
             )
