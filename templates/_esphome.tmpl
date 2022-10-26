@@ -44,6 +44,8 @@ logger:
 # https://esphome.io/components/time.html
 time:
   - platform: sntp
+    servers:
+      - 192.168.1.198
     timezone: Australia/Melbourne
     id: esptime
 
