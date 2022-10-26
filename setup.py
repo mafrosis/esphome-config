@@ -2,10 +2,10 @@
 
 from setuptools import setup, find_packages
 
-with open('README.md') as f:
+with open('README.md', encoding='utf8') as f:
     long_description = f.read()
 
-with open('requirements.txt') as f:
+with open('requirements.txt', encoding='utf8') as f:
     install_requires = f.readlines()
 
 setup(
@@ -16,7 +16,7 @@ setup(
     long_description=long_description,
     author='Matt Black',
     author_email='dev@mafro.net',
-    url='http://github.com/mafrosis/homeassistant-config/esphome',
+    url='http://github.com/mafrosis/esphome-config',
     packages=find_packages(exclude=['test']),
     package_data={'': ['LICENSE']},
     package_dir={'': '.'},
