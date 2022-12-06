@@ -56,3 +56,9 @@ mqtt:
   broker: 192.168.1.198
   keepalive: 60s
   discovery: true
+
+# Expose each device's esphome version
+# https://esphome.io/components/text_sensor/version.html
+text_sensor:
+  - platform: version
+    name: ESPHome Version ${device_id}
