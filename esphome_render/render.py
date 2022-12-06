@@ -37,6 +37,9 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
     elif device_type == 'lolin_pro':
         platform = 'esp32'
         board = 'lolin_d32_pro'
+    elif device_type == 'lolin_s2':
+        platform = 'esp32'
+        board = 'lolin_s2_mini'
     elif device_type == 'esp32':
         platform = 'esp32'
         board = 'nodemcu-32s'
