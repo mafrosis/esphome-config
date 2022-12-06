@@ -32,19 +32,19 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
     fallback_password = os.environ['WIFI_FALLBACK'].strip()
 
     if device_type == 'lolin':
-        platform = 'ESP32'
+        platform = 'esp32'
         board = 'lolin_d32'
     elif device_type == 'lolin_pro':
-        platform = 'ESP32'
+        platform = 'esp32'
         board = 'lolin_d32_pro'
     elif device_type == 'esp32':
-        platform = 'ESP32'
+        platform = 'esp32'
         board = 'nodemcu-32s'
     elif device_type == 'esp8266':
-        platform = 'ESP8266'
+        platform = 'esp8266'
         board = 'nodemcuv2'
     elif device_type == 'esp8285':
-        platform = 'ESP8266'
+        platform = 'esp8266'
         board = 'esp8285'
 
     if not wifi_password:
