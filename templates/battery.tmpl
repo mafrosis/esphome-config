@@ -1,0 +1,47 @@
+# vim: set ft=yaml:
+---
+# Wake an ESP to read sensors for run_duration every sleep_duration
+
+# https://esphome.io/components/sensor/adc.html
+sensor:
+  - platform: adc
+    pin: {{ adc_pin }}
+    name: "Battery Voltage ${device_id}"
+    {% if adc_pin != "VCC" %}
+    attenuation: 11db
+    {% endif %}
+    filters:
+      - multiply: 2
+    on_value_range:
+      below: 3.0
+      then:
+        - switch.turn_on: shutdown_1
+
+# https://esphome.io/components/switch/shutdown.html
+switch:
+  - platform: shutdown
+    id: shutdown_1
+
+# https://esphome.io/components/deep_sleep.html
+deep_sleep:
+  id: deep_sleep_1
+  run_duration: 10s
+  sleep_duration: {{ sleep }}
+
+mqtt:
+  on_message:
+    - topic: {{ device_id }}/ota_mode
+      payload: 'ON'
+      then:
+        - deep_sleep.prevent: deep_sleep_1
+    - topic: {{ device_id }}/sleep_mode
+      payload: 'ON'
+      then:
+        - deep_sleep.enter: deep_sleep_1
+
+  will_message:
+    topic: {{ device_id }}/status
+    payload: 'sleeping'
+  shutdown_message:
+    topic: {{ device_id }}/status
+    payload: 'offline'

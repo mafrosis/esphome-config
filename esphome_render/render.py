@@ -1,4 +1,5 @@
 import os
+import sys
 
 import click
 from jinja2 import Environment, FileSystemLoader
@@ -50,6 +51,20 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
         platform = 'esp8266'
         board = 'esp8285'
 
+    if 'battery' in templates:
+        # Attempt to handle voltage monitoring across board types
+        if board == 'lolin_d32':
+            adc_pin = '35'  # Lolin D32 connects battery pins to ADC 35 via resistors
+        elif platform == 'esp8266':
+            print('Battery voltage read on ESP8266 only works with A0 disconnected')
+            print('https://esphome.io/components/sensor/adc.html#esp8266-measuring-vcc')
+            adc_pin = 'VCC'
+        else:
+            print('Battery template is not supported for this board/platform')
+            sys.exit(1)
+    else:
+        adc_pin = ''
+
     if not wifi_password:
         raise Exception('WIFI_PASSWORD env not set')
     if not fallback_password:
@@ -81,6 +96,7 @@ def main(device_id: str, device_ip: str, device_type: str, name: str, templates,
                     address=address,
                     sleep=sleep,
                     fallback_password=fallback_password,
+                    adc_pin=adc_pin,
                 )
             )
 
