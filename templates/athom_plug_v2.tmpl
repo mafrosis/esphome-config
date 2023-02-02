@@ -1,0 +1,70 @@
+# vim: set ft=yaml:
+# https://github.com/athom-tech/athom-configs/blob/main/athom-smart-plug-v2.yaml
+---
+
+preferences:
+  flash_write_interval: 180sec
+
+binary_sensor:
+  - platform: status
+    name: ${device_name} Status
+
+  - platform: gpio
+    name: ${device_name} Power Button
+    pin:
+      number: 5
+      mode: INPUT_PULLUP
+      inverted: true
+    disabled_by_default: true
+    on_press:
+      - switch.toggle: relay
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766
+    update_interval: 10s
+    current:
+      name: ${device_name} Current
+      unit_of_measurement: A
+      filters:
+        - lambda: if (x < 0.060) return 0.0; else return x;
+    voltage:
+      name: ${device_name} Voltage
+      unit_of_measurement: V
+    power:
+      id: athom_plug_wattage
+      name: ${device_name} Power
+      filters:
+        - lambda: if (x < 3.0) return 0.0; else return x;
+      unit_of_measurement: W
+    energy:
+      name: ${device_name} Energy
+      unit_of_measurement: kWh
+      filters:
+        - multiply: 0.001
+
+  - platform: total_daily_energy
+    name: ${device_name} Daily Energy
+    power_id: athom_plug_wattage
+    accuracy_decimals: 3
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
+switch:
+  - platform: gpio
+    name: ${device_name}
+    pin: GPIO12
+    id: relay
+    restore_mode: RESTORE_DEFAULT_ON
+
+light:
+  - platform: status_led
+    name: ${device_name} Status LED
+    disabled_by_default: true
+    pin:
+      inverted: true
+      number: GPIO13
