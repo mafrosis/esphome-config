@@ -10,6 +10,10 @@ venv:
 setup: venv
 	@echo "Now source venv/bin/activate"
 
+.PHONY: flash_id
+flash_id:
+	esptool.py flash_id | grep MAC | cut -d : -f 5-7 | sed 's/://g'
+
 .PHONY: clean
 clean:
 	rm -rf build

@@ -40,7 +40,9 @@ My Devices
 Process
 ----------
 
- 0. Extract the ID for the above table using `esptool.py`, as specified [below](#id-field)
+How to flash a device with this repo.
+
+ 0. Extract the ID for the above table using `make flash`
  1. [Configure a custom image using the esphome templates](#template)
  2. [Build the custom image](#build)
  3. For store-bought devices, use [`tuya-convert`](#tuya-convert) to do the initial hack, flashing the binary built previously
@@ -48,15 +50,6 @@ Process
  5. Update "My Devices" table in this `README.md`
  6. Setup esphome config and re-flash to esphome
 
-
-### ID Field
-
-The `id` for a given device is the last 6 chars of its MAC address. One can retrieve the MAC by
-attaching the device via USB and running:
-
-```
-esptool.py flash_id | grep MAC | cut -d : -f 5-7
-```
 
 ESP Home
 ----------
