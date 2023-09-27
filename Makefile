@@ -39,3 +39,7 @@ ifdef USBDEV
 else
 	esphome $@ build/device_$(DEVICE).yaml
 endif
+
+.PHONY: logs
+logs:
+	esphome logs build/device_$(DEVICE).yaml
