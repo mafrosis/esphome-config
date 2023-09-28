@@ -1,0 +1,46 @@
+---
+# Pin configuration for a TZT 1.8" TFT 160x128 display
+
+# https://esphome.io/components/spi.html
+spi:
+  clk_pin: 18
+  mosi_pin: 23
+
+# https://esphome.io/components/display/index.html
+font:
+  - file: "gfonts://Roboto"
+    id: font1
+    size: 14
+  - file: "gfonts://Roboto"
+    id: font2
+    size: 20
+  - file: "gfonts://Roboto"
+    id: font3
+    size: 76
+
+## https://esphome.io/components/display/index.html#images
+#image:
+#  - file: egg.jpg
+#    id: egg
+#    resize: 160x128
+#    type: RGB24
+
+# https://esphome.io/components/display/st7735.html
+display:
+  - platform: st7735
+    model: 'INITR_18BLACKTAB'
+    reset_pin: 33
+    cs_pin: 14
+    dc_pin: 27
+
+    eight_bit_color: true
+
+    device_height: 160
+    device_width: 128
+    col_start: 0
+    row_start: 0
+    update_interval: 10s
+
+    lambda: |-
+      auto red = Color(255, 0, 0);
+      it.rectangle(25, 55, 30, 30, red);
