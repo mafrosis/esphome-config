@@ -1,4 +1,2 @@
 esphome
-click>8,<9
-jinja2
 pillow
