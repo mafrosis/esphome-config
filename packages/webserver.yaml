@@ -1,8 +1,6 @@
-# vim: set ft=yaml:
 ---
-# Enable the webserver
 # https://esphome.io/components/web_server.html
 web_server:
   auth:
     username: mafro
-    password: {{ fallback_password }}
+    password: !secret wifi_fallback
