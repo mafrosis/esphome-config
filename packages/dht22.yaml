@@ -1,15 +1,12 @@
-# vim: set ft=yaml:
 ---
-
-# Pin configuration for a DHT22 sensor
 # https://esphome.io/components/sensor/dht.html
 sensor:
   - platform: dht
-    pin: D4
+    pin: ${data_pin}
     model: DHT22_TYPE2
     temperature:
-      name: "{{ room }} Temperature"
+      name: "${room} Temperature"
       id: dht22_temp
     humidity:
-      name: "{{ room }} Humidity"
+      name: "${room} Humidity"
       id: dht22_hum

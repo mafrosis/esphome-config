@@ -1,5 +1,3 @@
-export WIFI_PASSWORD
-export WIFI_FALLBACK
 export USBDEV
 
 .PHONY: flash_id
@@ -8,7 +6,7 @@ flash_id:
 
 .PHONY: clean
 clean:
-	rm -rf build
+	rm -rf templates/.esphome
 
 .PHONY: gen-templates
 gen-templates:
@@ -44,17 +42,17 @@ gen-templates:
 
 
 .PHONY: compile
-compile: gen-templates
-	esphome compile build/device_$(DEVICE).yaml
+compile:
+	esphome compile templates/$(DEVICE).yaml
 
 .PHONY: upload run
 upload run: compile
 ifdef USBDEV
-	esphome $@ --device /dev/$(USBDEV) build/device_$(DEVICE).yaml
+	esphome $@ --device /dev/$(USBDEV) templates/$(DEVICE).yaml
 else
-	esphome $@ build/device_$(DEVICE).yaml
+	esphome $@ templates/$(DEVICE).yaml
 endif
 
 .PHONY: logs
 logs:
-	esphome logs build/device_$(DEVICE).yaml
+	esphome logs templates/$(DEVICE).yaml

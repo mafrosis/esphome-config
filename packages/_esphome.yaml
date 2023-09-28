@@ -1,21 +1,10 @@
-# vim: set ft=yaml:
 ---
-
-substitutions:
-  device_id: "{{ device_id }}"
-  device_name: {{ device_name }}
-  static_ip: {{ static_ip }}
-
-
 esphome:
   name: ${device_id}
 
-{{ platform }}:
-  board: {{ board }}
-
 wifi:
   ssid: eggs_iot
-  password: {{ wifi_password }}
+  password: !secret wifi_password
   fast_connect: true
 
   manual_ip:
@@ -27,7 +16,7 @@ wifi:
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
     ssid: ${device_id} Fallback Hotspot
-    password: {{ fallback_password }}
+    password: !secret wifi_fallback
 
 # Start a recovery AP if wifi fails to connect
 # https://esphome.io/components/captive_portal.html
