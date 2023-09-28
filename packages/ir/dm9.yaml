@@ -1,4 +1,3 @@
-# vim: set ft=yaml:
 ---
 # IR codes for AVI DM9/DM10 speakers
 
@@ -6,35 +5,35 @@
 # https://esphome.io/components/button/index.html
 button:
   - platform: template
-    name: "{{ room }} Input D1"
+    name: "${room} Input D1"
     on_press:
       - remote_transmitter.transmit_rc5:
           address: 0x10
           command: 0x01
 
   - platform: template
-    name: "{{ room }} Input D2"
+    name: "${room} Input D2"
     on_press:
       - remote_transmitter.transmit_rc5:
           address: 0x10
           command: 0x02
 
   - platform: template
-    name: "{{ room }} Volume Up"
+    name: "${room} Volume Up"
     on_press:
       - remote_transmitter.transmit_rc5:
           address: 0x10
           command: 0x10
 
   - platform: template
-    name: "{{ room }} Volume Down"
+    name: "${room} Volume Down"
     on_press:
       - remote_transmitter.transmit_rc5:
           address: 0x10
           command: 0x11
 
   - platform: template
-    name: "{{ room }} Mute"
+    name: "${room} Mute"
     on_press:
       - remote_transmitter.transmit_rc5:
           address: 0x10
