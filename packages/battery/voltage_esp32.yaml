@@ -1,0 +1,15 @@
+---
+# Battery voltage sensor for ESP32
+
+# https://esphome.io/components/sensor/adc.html
+sensor:
+  - platform: adc
+    pin: $battery_adc_pin
+    name: "Battery Voltage ${device_id}"
+    attenuation: 11db
+    filters:
+      - multiply: 2
+    on_value_range:
+      below: 3.0
+      then:
+        - switch.turn_on: shutdown_1

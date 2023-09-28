@@ -1,0 +1,28 @@
+---
+substitutions:
+  device_id: '707a3c'
+  device_name: 'Lolin D32 Outside'
+  static_ip: '192.168.20.57'
+
+esp32:
+  board: lolin_d32
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  sr04: !include
+    file: ../packages/sr04.yaml
+    vars:
+      room: 'Outside'
+      trigger_pin: 13
+      echo_pin: 12
+
+  battery_sleep: !include
+    file: ../packages/battery/deep_sleep.yaml
+    vars:
+      sleep_duration: 2h
+
+  battery_voltage: !include
+    file: ../packages/battery/voltage_esp32.yaml
+    vars:
+      battery_adc_pin: 35
