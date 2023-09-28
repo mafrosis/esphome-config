@@ -1,0 +1,14 @@
+---
+# Battery voltage sensor for ESP8266
+
+# https://esphome.io/components/sensor/adc.html
+sensor:
+  - platform: adc
+    pin: VCC
+    name: "Battery Voltage ${device_id}"
+    filters:
+      - multiply: 2
+    on_value_range:
+      below: 3.0
+      then:
+        - switch.turn_on: shutdown_1

@@ -1,0 +1,32 @@
+---
+substitutions:
+  device_id: '61ae30'
+  device_name: 'D1 Mini Pro'
+  static_ip: '192.168.20.67'
+
+esp8266:
+  board: nodemcuv2
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  dallas: !include
+    file: ../packages/dallas/base.yaml
+    vars:
+      pin: 23
+
+  ds18b20: !include
+    file: ../packages/dallas/sensor.yaml
+    vars:
+      room: 'Outside'
+      address: '0x2b196a841e64ff28'
+
+  battery_sleep: !include
+    file: ../packages/battery/deep_sleep.yaml
+    vars:
+      sleep_duration: 2h
+
+  battery_voltage: !include
+    file: ../packages/battery/voltage_esp8266.yaml
+    vars:
+      battery_adc_pin: 35

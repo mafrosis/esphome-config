@@ -1,0 +1,7 @@
+---
+# Sensor configuration for a single Dallas sensor
+
+sensor:
+  - platform: dallas
+    address: $address
+    name: "${room} Temperature"

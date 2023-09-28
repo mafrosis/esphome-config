@@ -1,0 +1,7 @@
+---
+# Base configuration for Dallas sensors
+# Use without dallas/sensor package to do sensor discovery
+
+# https://esphome.io/components/sensor/dallas.html
+dallas:
+  - pin: $pin
