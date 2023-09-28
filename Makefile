@@ -2,14 +2,6 @@ export WIFI_PASSWORD
 export WIFI_FALLBACK
 export USBDEV
 
-venv:
-	python3 -m venv venv
-	./venv/bin/pip install -e .
-
-.PHONY: setup
-setup: venv
-	@echo "Now source venv/bin/activate"
-
 .PHONY: flash_id
 flash_id:
 	esptool.py flash_id | grep MAC | cut -d : -f 5-7 | sed 's/://g'
