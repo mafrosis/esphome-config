@@ -1,0 +1,18 @@
+---
+substitutions:
+  device_id: '776b6e'
+  device_name: 'ESP8622 Bread Chamber'
+  static_ip: '192.168.20.64'
+
+esp8266:
+  board: nodemcuv2
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # Temp sensor
+  dht22: !include
+    file: ../packages/dht22.yaml
+    vars:
+      room: 'Bread Chamber'
+      data_pin: 1
