@@ -1,0 +1,11 @@
+---
+substitutions:
+  device_id: '5c3618'
+  device_name: 'Lolin D32 Pro testbed'
+  static_ip: '192.168.20.65'
+
+esp32:
+  board: lolin_d32_pro
+
+packages:
+  base: !include ../packages/_esphome.yaml
