@@ -1,0 +1,80 @@
+# https://community.home-assistant.io/t/inkbird-bt-thermometer-ibbq-with-esp32/325825
+---
+esphome:
+  on_boot:
+    priority: -10
+    then:
+      # Set unmanaged sensors to zero on boot
+      - lambda: |-
+          {
+            id(ble_sensor_1).publish_state(false);
+            id(ble_sensor_2).publish_state(false);
+          }
+
+script:
+  - id: timer
+    then:
+      - delay: 60s
+      - lambda: |-
+          {
+            id(ble_sensor_1).publish_state(false);
+            id(ble_sensor_2).publish_state(false);
+          }
+
+esp32_ble_tracker:
+  on_ble_advertise:
+    - mac_address: ${ble_mac}
+      then:
+        - script.stop: timer
+        - lambda: |-
+            ESP_LOGI("ble_adv", "New BLE device");
+            ESP_LOGI("ble_adv", "  address: %s", x.address_str().c_str());
+            ESP_LOGI("ble_adv", "  name: %s", x.get_name().c_str());
+            ESP_LOGI("ble_adv", "  Advertised service UUIDs:");
+
+            for (auto uuid : x.get_service_uuids()) {
+              ESP_LOGI("ble_adv", "    - %s", uuid.to_string().c_str());
+            }
+
+            ESP_LOGI("ble_adv", "  Advertised service data:");
+
+            for (auto data : x.get_service_datas()) {
+              ESP_LOGI("ble_adv", "    - %s: (length %i)", data.uuid.to_string().c_str(), data.data.size());
+            }
+
+            ESP_LOGI("ble_adv", "  Advertised manufacturer data:");
+
+            for (auto data : x.get_manufacturer_datas()) {
+              if (data.uuid.contains(0, 0)) {
+                int probe0 = (data.data[9] << 8) + data.data[8];
+                int probe1 = (data.data[11] << 8) + data.data[10];
+
+                ESP_LOGI("ble_data", "    - %f %f", probe0 / 10.0, probe1 / 10.0);
+
+                if (probe0 < 60000) {
+                  id(ble_sensor_1).publish_state(probe0 / 10.0);
+                } else {
+                  id(ble_sensor_1).publish_state(0);
+                }
+
+                if (probe1 < 60000) {
+                  id(ble_sensor_2).publish_state(probe1 / 10.0);
+                } else {
+                  id(ble_sensor_2).publish_state(0);
+                }
+              }
+            }
+
+# https://esphome.io/components/sensor/template.html
+sensor:
+  - platform: template
+    name: "Inkbird Probe 1"
+    id: ble_sensor_1
+    unit_of_measurement: "°C"
+    update_interval: 10s
+
+  - platform: template
+    name: "Inkbird Probe 2"
+    id: ble_sensor_2
+    unit_of_measurement: "°C"
+    update_interval: 10s
