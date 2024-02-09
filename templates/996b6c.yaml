@@ -1,0 +1,29 @@
+---
+substitutions:
+  device_id: '996b6c'
+  device_name: 'Lolin S3 BBQ'
+  static_ip: '192.168.20.72'
+
+esp32:
+  #board: lolin_s3
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  framework:
+    type: arduino
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # Inkbird bluetooth BBQ monitor
+  ibt4xc: !include
+    file: ../packages/ibt4xc.yaml
+    vars:
+      ble_mac: FC:45:C3:1F:17:7B
+
+  # PID controlled PWM fan
+  fan: !include
+    file: ../packages/pid_fan.yaml
+    vars:
+      tach_pin: 1  # Yellow
+      pwm_pin: 2   # Blue
+      room: 'BBQ'
