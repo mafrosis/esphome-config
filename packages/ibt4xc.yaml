@@ -11,21 +11,10 @@ esphome:
             id(ble_sensor_2).publish_state(false);
           }
 
-script:
-  - id: timer
-    then:
-      - delay: 60s
-      - lambda: |-
-          {
-            id(ble_sensor_1).publish_state(false);
-            id(ble_sensor_2).publish_state(false);
-          }
-
 esp32_ble_tracker:
   on_ble_advertise:
     - mac_address: ${ble_mac}
       then:
-        - script.stop: timer
         - lambda: |-
             ESP_LOGI("ble_adv", "New BLE device");
             ESP_LOGI("ble_adv", "  address: %s", x.address_str().c_str());
@@ -71,10 +60,10 @@ sensor:
     name: "Inkbird Probe 1"
     id: ble_sensor_1
     unit_of_measurement: "°C"
-    update_interval: 10s
+    update_interval: 5s
 
   - platform: template
     name: "Inkbird Probe 2"
     id: ble_sensor_2
     unit_of_measurement: "°C"
-    update_interval: 10s
+    update_interval: 5s

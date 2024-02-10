@@ -40,6 +40,39 @@ sensor:
     id: pid_output
     unit_of_measurement: "%"
 
+  - platform: pid
+    name: $room PID kp 2
+    type: PROPORTIONAL
+    unit_of_measurement: "%"
+
+  - platform: pid
+    name: $room PID ki 2
+    type: INTEGRAL
+    unit_of_measurement: "%"
+
+  - platform: pid
+    name: $room PID kd 2
+    type: DERIVATIVE
+    unit_of_measurement: "%"
+
+  - platform: pid
+    name: $room PID kp factor
+    type: KP
+
+  - platform: pid
+    name: $room PID ki factor
+    type: KI
+
+  - platform: pid
+    name: $room PID kd factor
+    type: KD
+
+  - platform: pid
+    name: $room PID output value 2
+    type: RESULT
+    id: pid_output_2
+    unit_of_measurement: "%"
+
 
 # https://esphome.io/components/number/template
 number:
@@ -90,7 +123,7 @@ output:
     id: fan_speed
     pin: $pwm_pin
     frequency: 25000Hz
-    max_power: 10%
+    max_power: 50%
 
 
 # https://esphome.io/components/climate/index.html
@@ -99,7 +132,7 @@ climate:
   - platform: pid
     name: $room PID Thermostat
     id: pid_thermostat
-    sensor: ble_sensor_2
+    sensor: ble_sensor_1
 
     heat_output: fan_speed
     default_target_temperature: 120
