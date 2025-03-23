@@ -22,9 +22,10 @@ wifi:
 # https://esphome.io/components/captive_portal.html
 captive_portal:
 
-# Enable OTA updates via port 8266
+# Enable OTA updates
 # https://esphome.io/components/ota.html
 ota:
+  - platform: esphome
 
 # Enable basic logger
 # https://esphome.io/components/logger.html
