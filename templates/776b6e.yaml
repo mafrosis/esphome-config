@@ -1,8 +1,8 @@
 ---
 substitutions:
   device_id: '776b6e'
-  device_name: 'ESP8622 Bread Chamber'
-  static_ip: '192.168.20.64'
+  device_name: 'ESP8266 Bread Chamber'
+  static_ip: '192.168.20.205'
 
 esp8266:
   board: nodemcuv2

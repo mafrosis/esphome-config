@@ -2,7 +2,7 @@
 substitutions:
   device_id: '5c3618'
   device_name: 'Lolin D32 Pro testbed'
-  static_ip: '192.168.20.65'
+  static_ip: '192.168.20.201'
 
 esp32:
   board: lolin_d32_pro

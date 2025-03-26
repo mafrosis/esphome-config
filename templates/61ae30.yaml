@@ -2,10 +2,10 @@
 substitutions:
   device_id: '61ae30'
   device_name: 'D1 Mini Pro'
-  static_ip: '192.168.20.67'
+  static_ip: '192.168.20.209'
 
 esp8266:
-  board: nodemcuv2
+  board: d1_mini_pro  # https://www.wemos.cc/en/latest/d1/d1_mini_pro.html
 
 packages:
   base: !include ../packages/_esphome.yaml

@@ -1,8 +1,8 @@
 ---
 substitutions:
   device_id: '0fe8ed'
-  device_name: 'ESP8622 Server Closet'
-  static_ip: '192.168.20.63'
+  device_name: 'ESP8266 Server Closet'
+  static_ip: '192.168.20.200'
 
 esp8266:
   board: nodemcuv2
@@ -15,4 +15,4 @@ packages:
     file: ../packages/dht22.yaml
     vars:
       room: 'Server Closet'
-      data_pin: 1
+      data_pin: D4
