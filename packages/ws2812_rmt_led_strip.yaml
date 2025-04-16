@@ -1,0 +1,15 @@
+---
+defaults:
+  light_id: light_1
+  room: ${device_id}
+
+# https://esphome.io/components/light/esp32_rmt_led_strip
+light:
+  - platform: esp32_rmt_led_strip
+    id: ${light_id}
+    name: ${room} LED
+    pin: ${data_pin}
+    rgb_order: RGB
+    num_leds: 1
+    chipset: ws2812
+    entity_category: config
