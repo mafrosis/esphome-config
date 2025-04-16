@@ -1,0 +1,50 @@
+---
+# https://github.com/stas-sl/esphome-sound-level-meter
+external_components:
+  - source: github://mafrosis/esphome-sound-level-meter@tmp
+    components: [i2s, sound_level_meter]
+
+i2s:
+  bck_pin: ${i2s_clk_pin}
+  ws_pin: ${i2s_ws_pin}
+  din_pin: ${i2s_data_pin}
+  sample_rate: 48000
+  bits_per_sample: 32
+  bits_shift: 8
+  #use_apll: true
+
+sound_level_meter:
+  update_interval: 15s
+
+  # which core on which to run realtime audio monitoring
+  task_core: ${task_core}
+
+  # https://invensense.tdk.com/wp-content/uploads/2015/02/INMP441.pdf
+  mic_sensitivity: -26dB
+  mic_sensitivity_ref: 94dB
+
+  groups:
+    - filters:
+        - type: sos
+          coeffs:
+            # INMP441:
+            #      b0            b1           b2          a1            a2
+            - [ 1.0019784 , -1.9908513  , 0.9889158 , -1.9951786  , 0.99518436]
+
+      groups:
+        - filters:
+            - type: sos
+              coeffs:
+                # A-weighting:
+                #       b0           b1            b2             a1            a2
+                - [ 0.16999495 ,  0.741029   ,  0.52548885 , -0.11321865 , -0.056549273]
+                - [ 1.         , -2.00027    ,  1.0002706  , -0.03433284 , -0.79215795 ]
+                - [ 1.         , -0.709303   , -0.29071867 , -1.9822421  ,  0.9822986  ]
+          sensors:
+            - type: eq
+              name: ${room}_loudness_avg
+              unit_of_measurement: dBA
+            - type: max
+              name: ${room}_loudness_max
+              window_size: 3s
+              unit_of_measurement: dBA

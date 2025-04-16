@@ -1,0 +1,35 @@
+---
+substitutions:
+  device_id: '78f2a4'
+  device_name: 'Waveshare C6'
+  static_ip: '192.168.20.206'
+  room: 'Office'
+
+esp32:
+  board: esp32-c6-devkitc-1
+  variant: esp32c6
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+    version: 5.3.1
+    platform_version: 6.9.0
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # Onboard RGB LED
+  led: !include
+    file: ../packages/led/ws2812_rmt_led_strip.yaml
+    vars:
+      data_pin: 8
+      light_id: light_1
+
+  # Sound meter using INMP441
+  meter: !include
+    file: ../packages/sound_level_meter.yaml
+    vars:
+      room: ${room}
+      i2s_ws_pin: 1
+      i2s_clk_pin: 2
+      i2s_data_pin: 0
+      task_core: 0  # esp32s6 is single core
