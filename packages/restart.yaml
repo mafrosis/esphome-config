@@ -1,0 +1,5 @@
+---
+# https://esphome.io/components/switch/restart.html
+switch:
+  - platform: restart
+    name: "$device_name Restart"
