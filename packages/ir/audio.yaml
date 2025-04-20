@@ -2,6 +2,7 @@
 # IR codes for an SPDIF audio switch
 
 # https://esphome.io/components/remote_transmitter.html
+# https://esphome.io/components/button/index.html
 button:
   - platform: template
     name: Audio Switch Power
