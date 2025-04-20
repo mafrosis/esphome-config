@@ -1,14 +1,17 @@
 ---
-# Pin configuration for an analog TEMT6000 sensor
+defaults:
+  room: ${device_id}
 
-# https://esphome.io/cookbook/temt6000.html
+# https://devices.esphome.io/devices/temt6000
+# https://esphome.io/components/sensor/adc.html#adc-esp32-attenuation
+# https://esphome.io/components/sensor/#median
 sensor:
   - platform: adc
-    pin: $data_pin
-    name: "$room Illuminance"
+    pin: ${data_pin}
+    name: ${room} Illuminance
     device_class: illuminance
     unit_of_measurement: lx
-    attenuation: auto
+    attenuation: auto  # ESP32; provide range of 0V-3V
     filters:
       - lambda: |-
           return (x / 10000.0) * 2000000.0;
