@@ -1,0 +1,19 @@
+---
+substitutions:
+  device_id: '61bc6f'
+  device_name: 'D1 Mini v4'
+  static_ip: '192.168.20.202'
+  room: 'Office Desk'
+
+esp8266:
+  board: d1_mini
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # LED strip for 8266
+  led: !include
+    file: ../packages/led/ws2813_esp8266.yaml
+    vars:
+      room: ${room}
+      num_leds: 94
