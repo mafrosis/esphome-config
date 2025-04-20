@@ -1,0 +1,30 @@
+---
+substitutions:
+  device_id: 'f4accc'
+  device_name: 'Lolin S2 Mini'
+  static_ip: '192.168.20.211'
+
+esp32:
+  board: lolin_s2_mini
+  variant: esp32s2
+  framework:
+    type: arduino
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # Infrared device setup
+  esp32: !include
+    file: ../packages/ir/esp32.yaml
+    vars:
+      pin: 8
+
+  # Audio splitter IR transmitter
+  audio: !include
+    file: ../packages/ir/audio.yaml
+
+  # Speaker IR transmitter
+  dm9: !include
+    file: ../packages/ir/dm9.yaml
+    vars:
+      room: 'Living Room'
