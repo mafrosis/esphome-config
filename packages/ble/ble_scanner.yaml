@@ -1,0 +1,24 @@
+---
+# https://esphome.io/components/esp32_ble_tracker.html
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 5s
+    window: 2s
+
+  on_ble_advertise:
+    - then:
+        - lambda: |-
+            ESP_LOGI("ble_adv", "BLE device");
+            ESP_LOGI("ble_adv", "  address: %s", x.address_str().c_str());
+            ESP_LOGI("ble_adv", "  name: %s", x.get_name().c_str());
+            ESP_LOGI("ble_adv", "  service data:");
+
+            for (auto data : x.get_service_datas()) {
+              ESP_LOGI("ble_adv", "    - %s: (length %i)", data.uuid.to_string().c_str(), data.data.size());
+            }
+
+            ESP_LOGI("ble_adv", "  manufacturer data:");
+
+            for (auto data : x.get_manufacturer_datas()) {
+              ESP_LOGI("ble_data", "    - %s: (length %i)", data.uuid.to_string().c_str(), data.data.size());
+            }
