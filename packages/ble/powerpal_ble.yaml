@@ -1,0 +1,36 @@
+---
+# https://github.com/WeekendWarrior1/powerpal_ble
+external_components:
+  - source: github://muneeb1990/esphome@powerpal_ble
+    components: [powerpal_ble]
+
+http_request:
+  id: powerpal_cloud_uploader
+
+# https://esphome.io/components/esp32_ble_tracker.html
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 5s
+    window: 2s
+
+# https://esphome.io/components/ble_client.html
+ble_client:
+  - mac_address: ${mac_address}
+    id: powerpal
+
+sensor:
+  - platform: powerpal_ble
+    ble_client_id: powerpal
+    power:
+      name: Powerpal Power
+    daily_energy:
+      name: Powerpal Daily Energy
+    energy:
+      name: Powerpal Total Energy
+    battery_level:
+      name: Powerpal Battery
+    pairing_code: 123123
+    notification_interval: 1
+    pulses_per_kwh: 1000
+    time_id: esptime
+    http_request_id: powerpal_cloud_uploader
