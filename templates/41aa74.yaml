@@ -1,0 +1,33 @@
+---
+substitutions:
+  device_id: '41aa74'
+  device_name: 'XIAO ESP32 C6 SuperMini'
+  static_ip: '192.168.20.210'
+  room: 'New Office'
+
+esp32:
+  board: esp32-c6-devkitm-1
+  variant: esp32c6
+  flash_size: 4MB
+  partitions: ../packages/zigbee/partitions_zb.csv
+  framework:
+    type: esp-idf
+    version: 5.3.1
+    platform_version: 6.9.0
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # LED strip for ESP32/IDF
+  led: !include
+    file: ../packages/ws2813_rmt_led_strip.yaml
+    vars:
+      room: ${room}
+      num_leds: 10
+      data_pin: 10
+
+  # Zigbee light device
+  zb: !include
+    file: ../packages/zigbee/color_dimmable_light.yaml
+    vars:
+      light_id: light_1
