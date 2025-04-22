@@ -8,6 +8,7 @@ flash_id:
 clean:
 	hatch run pio system prune -f
 	rm -rf templates/.esphome
+	hatch env prune
 
 .PHONY: compile
 compile:
