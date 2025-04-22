@@ -1,0 +1,66 @@
+---
+packages:
+  zb_base: !include _.yaml
+
+globals:
+   - id: color_x
+     type: float
+     restore_value: no
+     initial_value: '0'
+   - id: color_y
+     type: float
+     restore_value: no
+     initial_value: '0'
+
+zigbee:
+  on_join:
+    then:
+      - logger.log: "Joined network"
+
+  endpoints:
+    - num: 1
+      device_type: COLOR_DIMMABLE_LIGHT
+      clusters:
+        - id: ON_OFF
+          attributes:
+            - attribute_id: 0
+              type: bool
+              on_value:
+                then:
+                  - light.control:
+                      id: ${light_id}
+                      state: !lambda "return (bool)x;"
+
+        - id: LEVEL_CONTROL
+          attributes:
+            - attribute_id: 0
+              type: U8
+              value: 255
+              on_value:
+                then:
+                  - light.control:
+                      id: ${light_id}
+                      brightness: !lambda "return ((float)x)/255;"
+
+        - id: COLOR_CONTROL
+          attributes:
+            - attribute_id: 3
+              type: U16
+              on_value:
+                then:
+                  - lambda: id(color_x) = (float)x/65536;
+                  - light.control:
+                      id: ${light_id}
+                      red: !lambda "return zigbee::get_r_from_xy(id(color_x), id(color_y));"
+                      green: !lambda "return zigbee::get_g_from_xy(id(color_x), id(color_y));"
+                      blue: !lambda "return zigbee::get_b_from_xy(id(color_x), id(color_y));"
+            - attribute_id: 4
+              type: U16
+              on_value:
+                then:
+                  - lambda: id(color_y) = (float)x/65536;
+                  - light.control:
+                      id: ${light_id}
+                      red: !lambda "return zigbee::get_r_from_xy(id(color_x), id(color_y));"
+                      green: !lambda "return zigbee::get_g_from_xy(id(color_x), id(color_y));"
+                      blue: !lambda "return zigbee::get_b_from_xy(id(color_x), id(color_y));"

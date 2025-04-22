@@ -1,0 +1,16 @@
+---
+# Remove all _esphome.yaml config which requires TCP/IP
+wifi: !remove
+ota: !remove
+time: !remove
+mqtt: !remove
+
+# Enable logger via USB JTAG
+# https://esphome.io/components/logger.html
+logger:
+  hardware_uart: USB_SERIAL_JTAG
+
+# https://github.com/luar123/zigbee_esphome
+external_components:
+  - source: github://luar123/zigbee_esphome
+    components: [zigbee]
