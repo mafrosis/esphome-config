@@ -25,3 +25,11 @@ endif
 .PHONY: logs
 logs:
 	hatch run esphome logs templates/$(DEVICE).yaml
+
+.PHONY: list-serial
+list-serial:
+	hatch run python -m serial.tools.list_ports -v
+
+.PHONY: miniterm
+miniterm:
+	hatch run python -m serial.tools.miniterm
