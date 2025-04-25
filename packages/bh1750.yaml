@@ -1,0 +1,17 @@
+---
+# Pin configuration for a BH1750 i2c light sensor
+defaults:
+  room: ${device_id}
+
+
+# https://esphome.io/components/i2c.html
+i2c:
+  sda: ${i2c_data_pin}
+  scl: ${i2c_clock_pin}
+
+# https://esphome.io/components/sensor/bh1750.html
+sensor:
+  - platform: bh1750
+    name: ${room} Illuminance
+    address: 0x23  # ADDR pin floating or pulled low
+    # address: 0x5C  # ADDR pin pulled high
