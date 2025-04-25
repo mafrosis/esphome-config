@@ -19,30 +19,7 @@ I use [ESP Home](https://esphome.io/) both for NodeMCU type ESP8266 boards, and 
 devices running Tuya.
 
 
-Devices
-----------
-
-| ID | IP | In-Use? | Model | Purpose |
-| - | - | - | - | - |
-| [`c05775`](./templates/c05775.yaml) | 192.168.20.56 | N | PC190HA |
-| [`92d0f9`](./templates/92d0f9.yaml) | 192.168.20.55 | N | PC190HA |
-| [`f58f91`](./templates/f58f91.yaml) |               | N | PB89HA |
-| [`10945b`](./templates/10945b.yaml) | 192.168.20.53 | N | NodeMCUv2 | Temp sensor Master bedroom
-| [`774ba4`](./templates/774ba4.yaml) | 192.168.20.52 | N | NodeMCUv2 | Temp sensor Front bedroom
-| [`7756f8`](./templates/7756f8.yaml) | 192.168.20.51 | Y | NodeMCUv2 | Temp sensor Living room
-| [`0fe8ed`](./templates/0fe8ed.yaml) | 192.168.20.63 | Y | NodeMCUv2 | Temp sensor server closet
-| [`776b6e`](./templates/776b6e.yaml) | 192.168.20.64 | Y | NodeMCUv2 | Temp sensor bread chamber
-| [`abd1b5`](./templates/abd1b5.yaml) | 192.168.20.58 | Y | NodeMCUv2 | TV/audio controller and temp/light monitor
-| [`707a3c`](./templates/707a3c.yaml) | 192.168.20.57 | Y | LOLIN D32 | Outdoor drain monitor on battery
-| [`61ae30`](./templates/61ae30.yaml) | 192.168.20.67 | Y | D1 Mini Pro | Outdoor temp sensor on battery
-| [`5c3618`](./templates/5c3618.yaml) | 192.168.20.65 | Y | Lolin D32 Pro | Inkbird bluetooth BBQ monitor
-| [`de3341`](./templates/de3341.yaml) | 192.168.20.66 | N | D1 Mini v3 |
-| [`61bc6f`](./templates/61bc6f.yaml) | 192.168.20.68 | N | D1 Mini v4 |
-| [`f4accc`](./templates/f4accc.yaml) | 192.168.20.69 | N | S2 Mini | mitsubishiheatpump
-| [`e37b74`](./templates/e37b74.yaml) | 192.168.20.70 | N | D1 Mini v1 |
-
-
-Process
+How
 ----------
 
 How to flash a device with this repo.
@@ -50,9 +27,8 @@ How to flash a device with this repo.
  0. Extract the ID for the above table using `make flash`
  1. [Configure a custom image using the esphome templates](#template)
  2. [Build the custom image](#build)
- 3. Ensure device appears on wifi network
- 4. Update "My Devices" table in this `README.md`
- 5. Setup esphome config and re-flash to esphome
+ 3. Flash and ensure device appears on wifi network
+ 4. Watch the MQTT logs using `DEVICE=blah make logs`
 
 
 ESP Home
@@ -130,10 +106,10 @@ network. If that is failing, switch to flash via USB.
     DEVICE=c0a4ba make upload
 
 
-Devices
+Components
 ---------
 
-Notes on devices to use with ESP32/ESP8266.
+Notes and pinouts for various components I've used with ESP32/ESP8266.
 
 
 ## SSD1306
@@ -170,7 +146,7 @@ display:
 ```
 
 
-## ST7735
+## ST7735 display
 
 _[`st7735.tmpl`](./templates/display/st7735.tmpl)_
 
@@ -203,6 +179,7 @@ display:
     cs_pin: 22
     dc_pin: 23
 ```
+
 
 ## LOLIN IR
 
@@ -253,7 +230,7 @@ follows. The colours correspond to the 10 pin TFT connector cable that fits the 
 |10 |Black  |`TFT_LED`|`IO32`|Connect to 3v or 5v|
 
 
-## DS18B20
+## DS18B20 one-wire temp sensor
 
 _[`ds18b20.tmpl`](./templates/ds18b20.tmpl)_
 
@@ -271,22 +248,22 @@ libraries), so preference is to use the [`w1thermsensor`](https://github.com/tim
 project as in [mafrosis/w1therm](https://github.com/mafrosis/w1therm).
 
 ```
-┌──────────────────┐
-│ DS18B20          │
-│                  │
-│ RED YELLOW BLACK │
-└──────────────────┘
+┌───────────────┐
+│ DS18B20       │
+│               │
+│ RED  YEL  BLK │
+└───────────────┘
+   │    │    │
+   │    │    │
+   │    │    │
+┌─────────┐  │
+│ 2.2k R  │  └┐
+└─────────┘   │
    │    │     │
    │    │     │
    │    │     │
-┌─────────┐   │
-│ 2.2k R  │   └┐
-└─────────┘    │
-   │    │      │
-   │    │      │
-   │    │      │
 
-  3V    D5    GND
+  3V    D5   GND
 ```
 
 
@@ -328,3 +305,158 @@ GND  black   brown
 TX   green   orange
 RX   blue    yellow
 ```
+
+## TEMT6000 light sensor
+
+https://www.freetronics.com.au/products/light-sensor-module
+https://cdn.shopify.com/s/files/1/0045/8932/files/TEMT6000.pdf
+
+```
+┌─┬───┬┬───┬┬───┬─┐
+│ │GND││DAT││VCC│ │
+│ └───┘└───┘└───┘ │
+│      ┌───┐      │
+│ .    └───┘    . │
+│( )           ( )│
+└─'─────────────'─┘
+```
+
+
+## INMP441 I2S microphone
+
+
+![INMP441 mic](./images/inmp441.jpg)
+
+```
+L/R  left/right channel (needs to be grounded not floating)
+WS   i2s word select
+SCK  i2s clock
+SD   i2s data
+VCC  3.3V
+GND  ground
+```
+
+
+## Waveshare C6 1.47" LCD
+
+![Waveshare C6 LCD](./images/esp32-c6-lcd-1.47-3.jpg)
+![Waveshare C6 LCD](./images/esp32-c6-lcd-1.47-4.jpg)
+
+https://www.waveshare.com/wiki/ESP32-C6-LCD-1.47
+
+```
+      ┌─────┐
+┌─────┤     ├─────┐
+├─┐   │     │   ┌─┤
+│ │   └─────┘   │ │
+├─┘             └─┤
+│                 │
+│5V            TXD│
+│GND           RXD│
+│3V3            13│
+│0              12│
+│1              23│
+│2    ┌─────┐   20│
+│3    │     │   19│
+│4    │     │   18│
+│5    └─────┘    9│
+│                 │
+└─────────────────┘
+```
+
+### Quirks
+
+The ESP-C6 is a single core SOC, which means wifi and sensor reading must share a core. Make sure any sensor read intervals are long enough not to overload the CPU.
+
+
+## Seeed XIAO C6
+
+![XIAO C6](./images/xiaoc6.jpg)
+
+https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/
+
+```
+      ┌─────┐
+┌┬─┬──┤     ├──┬─┬┐
+│└─┘  │     │  └─┘│
+│D0   └─────┘   5V│
+│D1            GND│
+│D2  ┌───────┐ 3V3│
+│D3  │       │ D10│
+│D4  │       │  D9│
+│D5  │       │  D8│
+│D6  └───────┘  D7│
+└─────────────────┘
+```
+
+![XIAO C6](./images/xiaoc6_pinout.png)
+
+
+## Zigbee
+
+
+
+## WS2813 LED strip
+
+![WS2813 LED](./images/ws2813_led_4wire.jpg)
+
+```
+GND  white
+5V   red
+DI   green
+BI   blue
+```
+
+The two data pins are for primary data and backup data. Only the primary `DI` needs to be connected to the ESP controller. The backup connector links each LED with the next-but-one, if the LED strip is cut and reconnected then all four wires must be connected.
+
+Supplied wires are AWG22 gauge with 2.54mm pitch connectors.
+
+### Power
+
+A run of 100 LEDs at 100% brightness can draw a large amount of power - nearly 3 amps at 5V in testing. According to the spec, power requirement is 18 watts per metre.
+
+Really long runs need to have power injected along the LED strip:
+
+![WS2813 Power](./images/ws2813_led_4wire_pwr.png)
+
+### Quirks
+
+Using `neopixelplus` requires the ESP8266 GPIO3 pin. On the Wemos D1 mini this is labelled `RX`.
+
+
+## Lolin S3 Mini
+
+![Lolin S3 Mini pinout](./images/s3_mini_v1.0.0_4_16x9.jpg)
+
+https://www.wemos.cc/en/latest/s3/s3_mini.html
+
+
+## BH1750 Light sensor
+
+_[`bh1750.tmpl`](./packages/bh1750.yaml)_
+
+![BH1750 pinout](./images/bh1750.jpg)
+
+```
+┌─.───────────────┐
+│( )          3.3V│
+│ '    ┌─┐     GND│
+│      │ │     SCL│
+│ .    └─┘     SDA│
+│( )          ADDR│
+└─'───────────────┘
+```
+
+Operates in range 3V-5V.
+
+The ADDR pin enables two of these to be operated on the same i2c bus. Pull the pin high/low to differentiate the address.
+
+```
+High 0x5C
+Low 0x23
+```
+
+
+## HTU21d Temp sensor
+
+![HTU21d pinout](./images/htu21d.jpg)
