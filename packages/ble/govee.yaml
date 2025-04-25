@@ -1,0 +1,66 @@
+---
+# BLE capture and processing for Govee temp/humidity sensor
+defaults:
+  room: ${device_id}
+
+
+# https://esphome.io/components/esp32_ble_tracker.html
+esp32_ble_tracker:
+  scan_parameters:
+    interval: 100s
+    window: 10s
+
+  on_ble_manufacturer_data_advertise:
+    - manufacturer_id: EC88
+      mac_address: ${ble_mac}
+      then:
+        - lambda: |-
+            if (x.size() < 5) {
+              ESP_LOGW("ble_data", "Manufacturer x too short");
+              return;
+            }
+
+            // Extract bytes 1 to 4 (skip the first byte)
+            uint8_t p[4] = {x[1], x[2], x[3], x[4]};
+            uint8_t batt = p[3];
+
+            uint32_t temphum = ((uint32_t)p[0] << 16) |
+                               ((uint32_t)p[1] << 8) |
+                               ((uint32_t)p[2]);
+
+            bool isNegative = temphum & 0x800000;
+            temphum &= ~0x800000;
+
+            float hum10 = temphum % 1000;
+            float hum = hum10 / 10.0;
+
+            float temp = (temphum - hum10) / 10000.0;
+            if (isNegative) {
+              temp *= -1;
+            }
+
+            ESP_LOGI("ble_data", "Temperature: %.1f °C | Humidity: %.1f %% | Battery: %u %%", temp, hum, batt);
+
+            id(temp_1).publish_state(temp);
+            id(hum_1).publish_state(hum);
+            id(batt_1).publish_state(batt);
+
+# https://esphome.io/components/sensor/template.html
+sensor:
+  - platform: template
+    name: ${room} Temperature
+    id: temp_1
+    device_class: temperature
+    unit_of_measurement: '°C'
+
+  - platform: template
+    name: ${room} Humidity
+    id: hum_1
+    device_class: humidity
+    unit_of_measurement: '%'
+
+  - platform: template
+    name: ${room} Govee Battery Level
+    id: batt_1
+    device_class: battery
+    unit_of_measurement: '%'
