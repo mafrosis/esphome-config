@@ -1,5 +1,8 @@
 ---
 # Pin configuration for a HTU21D i2c temp/humidity sensor
+defaults:
+  room: ${device_id}
+
 
 # https://esphome.io/components/i2c.html
 i2c:
@@ -10,9 +13,8 @@ i2c:
 sensor:
   - platform: htu21d
     temperature:
-      name: "$room Temperature"
+      name: $room Temperature
       id: htu21d_temp
     humidity:
-      name: "$room Humidity"
+      name: $room Humidity
       id: htu21d_hum
-    update_interval: 60s
