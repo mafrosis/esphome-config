@@ -4,6 +4,8 @@ substitutions:
   device_name: 'S3 Mini'
   static_ip: '192.168.20.205'
   room: 'Office'
+  #ble_mac: A4:C1:38:12:4E:93  # Govee downstairs
+  ble_mac: A4:C1:38:33:39:2E  # Govee upstairs
 
 esp32:
   board: lolin_s3_mini
@@ -24,6 +26,13 @@ packages:
       room: ${room}
       num_leds: 129
       data_pin: 16
+
+  # Govee BLE
+  govee: !include
+    file: ../packages/ble/govee.yaml
+    vars:
+      room: ${room}
+      ble_mac: ${ble_mac}
 
   # Light sensor
   light: !include
