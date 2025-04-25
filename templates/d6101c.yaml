@@ -1,0 +1,34 @@
+---
+substitutions:
+  device_id: 'd6101c'
+  device_name: 'S3 Mini'
+  static_ip: '192.168.20.205'
+  room: 'Office'
+
+esp32:
+  board: lolin_s3_mini
+  variant: esp32s3
+  framework:
+    type: arduino
+    version: latest
+    platform_version: 6.9.0  # Required for lolin_s3_mini board
+
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  # LED strip for ESP32
+  led: !include
+    file: ../packages/ws2813_esp32.yaml
+    vars:
+      room: ${room}
+      num_leds: 129
+      data_pin: 16
+
+  # Light sensor
+  light: !include
+    file: ../packages/bh1750.yaml
+    vars:
+      i2c_data_pin: 11
+      i2c_clock_pin: 10
+      room: ${room}
