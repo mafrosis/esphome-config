@@ -1,0 +1,21 @@
+---
+defaults:
+  light_id: light_1
+  room: ${device_id}
+  num_leds: 1
+
+# https://esphome.io/components/light/esp32_rmt_led_strip
+light:
+  - platform: esp32_rmt_led_strip
+    id: ${light_id}
+    name: ${room} LED
+    pin: ${data_pin}
+    rgb_order: RGB
+    num_leds: ${num_leds}
+    entity_category: config
+    bit0_high: 300ns  # T0H (0-code, High-level time): 300ns to 450ns
+    bit0_low: 750ns  # T1H (1-code, High-level time): 750ns to 1000ns
+    bit1_high: 300ns  # T0L (0-code, Low-level time): 300ns to 100us
+    bit1_low: 300ns  # T1L (1-code, Low-level time): 300ns to 100us
+    reset_high: 300us  # RES (Frame unit, Low-level time): 300us or more
+    reset_low: 300us  # RES (Frame unit, Low-level time): 300us or more

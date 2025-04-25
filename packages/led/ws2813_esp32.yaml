@@ -1,0 +1,13 @@
+---
+defaults:
+  room: ${device_id}
+
+# https://esphome.io/components/light/neopixelbus.html
+light:
+  - platform: neopixelbus
+    variant: WS2813
+    pin: ${data_pin}
+    num_leds: ${num_leds}
+    name: ${room} LED
+    method:
+      type: esp32_rmt

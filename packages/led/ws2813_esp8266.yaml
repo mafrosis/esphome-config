@@ -1,0 +1,13 @@
+---
+defaults:
+  room: ${device_id}
+
+# https://esphome.io/components/light/neopixelbus.html
+light:
+  - platform: neopixelbus
+    variant: WS2813
+    pin: GPIO3
+    num_leds: ${num_leds}
+    name: ${room} LED
+    method:
+      type: esp8266_dma  # uses GPIO3
