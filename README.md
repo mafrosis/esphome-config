@@ -105,6 +105,30 @@ network. If that is failing, switch to flash via USB.
 
     DEVICE=c0a4ba make upload
 
+#### Changing a device IP address
+
+Leverage the `use_address` attribute on ESPHome's wifi component to connect to a specific IP for the
+OTA update.
+
+For example, moving a device from `192.168.20.64` to `192.168.20.205`:
+
+```
+---
+substitutions:
+  device_id: '776b6e'
+  device_name: 'ESP8266 Bread Chamber'
+  static_ip: '192.168.20.205'
+
+esp8266:
+  board: nodemcuv2
+
+packages:
+  base: !include
+    file: ../packages/_esphome.yaml
+    vars:
+      use_address: '192.168.20.64'
+```
+
 
 Components
 ---------

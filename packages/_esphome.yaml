@@ -1,4 +1,7 @@
 ---
+defaults:
+  use_address: ${static_ip}
+
 esphome:
   name: ${device_id}
 
@@ -12,6 +15,8 @@ wifi:
     gateway: 192.168.20.1
     subnet: 255.255.255.0
     dns1: 192.168.1.198
+
+  use_address: ${use_address}
 
 # Enable OTA updates
 # https://esphome.io/components/ota.html
