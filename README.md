@@ -291,16 +291,7 @@ project as in [mafrosis/w1therm](https://github.com/mafrosis/w1therm).
 ```
 
 
-## Battery
-
-```
-mosquitto_pub -h 192.168.1.198 -m 'ON' -t 707a3c/ota_mode -r
-```
-
-
 ## Mitsubishi Aircon Unit
-
-_[`mitsubishiheatpump.tmpl`](./templates/mitsubishiheatpump.tmpl)_
 
 The [`SwiCago/HeatPump`](https://github.com/SwiCago/HeatPump) project made it possible to control
 Mitsubishi aircon units via serial, on a connector named `CN105`. A kind soul wrapped this library
@@ -348,6 +339,9 @@ https://cdn.shopify.com/s/files/1/0045/8932/files/TEMT6000.pdf
 
 ## INMP441 I2S microphone
 
+_[`sound_level_meter.yaml`](./packages/sound_level_meter.yaml)_
+
+A digital microphone using the [i2s sound bus](https://en.wikipedia.org/wiki/I%C2%B2S) (which is similar to i2c, but unrelated).
 
 ![INMP441 mic](./images/inmp441.jpg)
 
@@ -362,6 +356,10 @@ GND  ground
 
 
 ## Waveshare C6 1.47" LCD
+
+_[Waveshare C6 template](./templates/78f2a4.yaml)_
+
+This neat little ESP32-C6 has a LED screen attached and a built-in LED.
 
 ![Waveshare C6 LCD](./images/esp32-c6-lcd-1.47-3.jpg)
 ![Waveshare C6 LCD](./images/esp32-c6-lcd-1.47-4.jpg)
@@ -395,6 +393,8 @@ The ESP-C6 is a single core SOC, which means wifi and sensor reading must share 
 
 ## Seeed XIAO C6
 
+_[XIAO ESP32 C6 SuperMini template](./templates/41aa74.yaml)_
+
 ![XIAO C6](./images/xiaoc6.jpg)
 
 https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/
@@ -418,9 +418,17 @@ https://wiki.seeedstudio.com/xiao_esp32c6_getting_started/
 
 ## Zigbee
 
+The newer ESP32-C6 supports Zigbee/Thread, and so the radio can be configured for that protocol rather than wifi. It's not possible to use wifi AND zigbee at the same time.
+
+Example in commit `1a07bd2`.
+
+Zigbee is worth exploring for battery powered devices, as it has much lower power requirements than Wifi.
+
 
 
 ## WS2813 LED strip
+
+_[LED packages](./packages/led)_
 
 ![WS2813 LED](./images/ws2813_led_4wire.jpg)
 
@@ -457,7 +465,7 @@ https://www.wemos.cc/en/latest/s3/s3_mini.html
 
 ## BH1750 Light sensor
 
-_[`bh1750.tmpl`](./packages/bh1750.yaml)_
+_[`bh1750` package](./packages/bh1750.yaml)_
 
 ![BH1750 pinout](./images/bh1750.jpg)
 
@@ -484,3 +492,14 @@ Low 0x23
 ## HTU21d Temp sensor
 
 ![HTU21d pinout](./images/htu21d.jpg)
+
+
+## Battery & Deep sleep
+
+Notes on LOLIN battery headers
+Charging batteries
+Deep Sleep
+
+```
+mosquitto_pub -h 192.168.1.198 -m 'ON' -t 707a3c/ota_mode -r
+```
