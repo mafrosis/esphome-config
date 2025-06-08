@@ -6,7 +6,7 @@ esphome:
   name: ${device_id}
 
 wifi:
-  ssid: eggs_iot
+  ssid: bacon_iot
   password: !secret wifi_password
   fast_connect: true
 
