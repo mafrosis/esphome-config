@@ -1,0 +1,7 @@
+---
+# Scanner for one-wire protocol
+
+# https://esphome.io/components/one_wire
+one_wire:
+  - platform: gpio
+    pin: ${data_pin}

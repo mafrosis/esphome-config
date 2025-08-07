@@ -1,0 +1,18 @@
+---
+substitutions:
+  device_id: '9b3ac8'
+  device_name: 'Lolin D32 Outside'
+  static_ip: '192.168.20.57'
+
+esp32:
+  board: lolin_d32
+
+packages:
+  base: !include ../packages/_esphome.yaml
+
+  ds18b20: !include
+    file: ../packages/one_wire/dallas.yaml
+    vars:
+      room: 'Outside'
+      data_pin: 23
+      address: '0x2b196a841e64ff28'

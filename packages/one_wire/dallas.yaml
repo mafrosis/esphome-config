@@ -1,0 +1,16 @@
+---
+# Single sensor using the one-wire protocol
+defaults:
+  room: ${device_id}
+
+
+# https://esphome.io/components/one_wire
+one_wire:
+  - platform: gpio
+    pin: ${data_pin}
+
+# https://esphome.io/components/sensor/dallas_temp.html
+sensor:
+  - platform: dallas_temp
+    address: ${address}
+    name: ${room} Temperature
